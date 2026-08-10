@@ -1,0 +1,677 @@
+/* ------------------------------------------------------------------
+   reverie — film / photo / sound
+   Everything visual is tuned from the tokens in :root below.
+------------------------------------------------------------------ */
+
+:root {
+  /* The two palettes, each written once. */
+  --l-bg: #f3f1ed; --l-ink: #171614; --l-ink-soft: #4b4741;
+  --l-muted: #a5a099; --l-rule: #dfdbd3; --l-accent: #a8451c; --l-shade: #e7e3db;
+
+  --d-bg: #121110; --d-ink: #ebe7df; --d-ink-soft: #b3ada3;
+  --d-muted: #6d675e; --d-rule: #2b2825; --d-accent: #e2794b; --d-shade: #1c1a18;
+
+  /* Whichever one is live — light unless a rule below overrides it. */
+  --bg:        var(--l-bg);
+  --ink:       var(--l-ink);
+  --ink-soft:  var(--l-ink-soft);
+  --muted:     var(--l-muted);
+  --rule:      var(--l-rule);
+  --accent:    var(--l-accent);
+  --shade:     var(--l-shade);
+  --dark:      0;                /* 0 = sun, 1 = moon. drives the toggle icon. */
+  color-scheme: light;
+
+  /* Latin falls to the mono faces; Thai characters fall through to the Thai
+     faces after them, so mixed sentences render correctly in one stack. */
+  --mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", "Liberation Mono",
+          "Noto Sans Thai", "IBM Plex Sans Thai", "Leelawadee UI", "Thonburi",
+          "Tahoma", monospace;
+
+  --fs:       11.5px;
+  --lh:       1.85;
+  --track:    0.015em;
+
+  --sidebar:  212px;
+  --gutter:   34px;
+  --measure:  520px;
+
+  --ease:     cubic-bezier(.2, .7, .3, 1);
+}
+
+/* Dark applies when the system asks for it AND the visitor hasn't forced light,
+   or when they've explicitly chosen dark. The two blocks can't be merged —
+   one lives inside a media query — but each is only a remap of the palette
+   above, so the colour values themselves are still written once. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--d-bg);   --ink: var(--d-ink);     --ink-soft: var(--d-ink-soft);
+    --muted: var(--d-muted); --rule: var(--d-rule); --accent: var(--d-accent);
+    --shade: var(--d-shade); --dark: 1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: var(--d-bg);   --ink: var(--d-ink);     --ink-soft: var(--d-ink-soft);
+  --muted: var(--d-muted); --rule: var(--d-rule); --accent: var(--d-accent);
+  --shade: var(--d-shade); --dark: 1;
+  color-scheme: dark;
+}
+
+/* Thai needs more room: taller lines for the vowel marks above and below,
+   a slightly larger size to stay legible, and no letter-spacing — tracking
+   pulls Thai words apart because the script has no spaces between them. */
+html[lang="th"] {
+  --fs:    13px;
+  --lh:    2;
+  --track: 0;
+}
+html[lang="th"] h1,
+html[lang="th"] h2,
+html[lang="th"] .link-inline,
+html[lang="th"] .disc-card-t { letter-spacing: 0.02em; }
+html[lang="th"] h1.display { font-size: 26px; letter-spacing: 0.03em; line-height: 1.35; }
+html[lang="th"] .wipe-slate { letter-spacing: 0.25em; text-indent: 0.25em; }
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  transition: background-color 340ms ease, color 340ms ease;
+  font-family: var(--mono);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  letter-spacing: var(--track);
+  font-weight: 400;
+  display: grid;
+  grid-template-columns: var(--sidebar) minmax(0, 1fr);
+  align-items: start;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+p { margin: 0 0 1.15em 0; }   /* not var(--lh) — that token is unitless */
+ul { margin: 0; padding: 0; list-style: none; }
+img, video { display: block; max-width: 100%; height: auto; }
+
+::selection { background: var(--ink); color: var(--bg); }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--ink); color: var(--bg); padding: 8px 12px; z-index: 50;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+
+/* ---------------------------------------------------------------- sidebar */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 30px 18px 40px 30px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--rule); }
+
+.wordmark {
+  display: block;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+.wordmark:hover { color: var(--accent); }
+
+.tagline {
+  color: var(--muted);
+  margin: 0 0 10px 0;
+}
+
+/* language + theme controls */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 26px;
+}
+
+.lang {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.lang-btn {
+  font: inherit;
+  letter-spacing: var(--track);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 140ms ease;
+}
+.lang-btn:hover { color: var(--accent); }
+.lang-btn[aria-current] { color: var(--ink); }
+.lang-sep { color: var(--muted); opacity: 0.5; }
+
+/* ------------------------------------------------------- sun / moon toggle */
+/* One circle and eight rays. Going dark scales the circle up, slides a masked
+   circle across it to bite out a crescent, and folds the rays away. Every
+   value is interpolated from --dark, so the icon cannot disagree with the
+   palette — they're set by the same rule. */
+
+.theme-btn {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 20px; height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 160ms ease;
+}
+.theme-btn:hover { color: var(--accent); }
+
+.theme-icon { display: block; width: 13px; height: 13px; overflow: visible; }
+
+.theme-orb {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(calc(0.58 + 0.42 * var(--dark)));
+  transition: transform 420ms var(--ease);
+}
+.theme-bite {
+  transform: translate(calc(15px - 10px * var(--dark)), calc(-11px + 6px * var(--dark)));
+  transition: transform 420ms var(--ease);
+}
+.theme-rays {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: calc(1 - var(--dark));
+  transform: scale(calc(1 - 0.45 * var(--dark))) rotate(calc(var(--dark) * 40deg));
+  transition: transform 420ms var(--ease), opacity 260ms ease;
+}
+
+.menu-toggle {
+  display: none;
+  font: inherit;
+  letter-spacing: var(--track);
+  color: var(--ink);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  padding: 0 0 1px;
+  cursor: pointer;
+}
+
+.nav-block { margin-bottom: 26px; }
+
+.nav-label {
+  color: var(--muted);
+  margin: 0 0 2px;
+}
+
+.sidebar li a {
+  position: relative;
+  display: block;
+  color: var(--ink-soft);
+  text-transform: lowercase;
+  padding: 0.5px 0;
+  transition: color 140ms ease;
+}
+.sidebar li a::before {
+  content: "\203A";              /* › marker, out of flow so nothing shifts */
+  position: absolute;
+  left: -11px;
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: opacity 140ms ease, transform 140ms var(--ease);
+}
+.sidebar li a:hover { color: var(--accent); }
+.sidebar li a:hover::before,
+.sidebar li a[aria-current]::before { opacity: 1; transform: none; }
+.sidebar li a[aria-current] { color: var(--ink); }
+
+/* the three disciplines get numbers */
+.nav-disciplines { margin-bottom: 24px; }
+.sidebar li a.disc-link { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 6px; }
+.disc-n { color: var(--muted); transition: color 140ms ease; }
+.disc-name { letter-spacing: 0.04em; }
+.disc-link:hover .disc-n,
+.disc-link[aria-current] .disc-n { color: var(--accent); }
+
+.sidebar-foot {
+  margin-top: 34px;
+  color: var(--muted);
+}
+.sidebar-foot p { margin: 0; }
+
+/* ------------------------------------------------------------------- main */
+
+main {
+  padding: 30px var(--gutter) 140px;
+  min-height: 100vh;
+  min-width: 0;
+}
+
+.view { max-width: var(--measure); }
+
+/* every top-level block rises in sequence — --i is set per block in app.js */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.view > * {
+  animation: rise 460ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* media */
+
+.media { margin: 0 0 26px; }
+.media figure { margin: 0 0 10px; }
+.media figcaption { color: var(--muted); margin-top: 7px; }
+
+@keyframes unveil {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+.frame {
+  background: var(--shade);
+  overflow: hidden;
+  animation: unveil 820ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 60ms);   /* --i inherits from the block */
+}
+.frame img {
+  width: 100%;
+  image-orientation: from-image;   /* respect the exif rotation on portrait shots */
+  transition: transform 800ms var(--ease);
+}
+.frame:hover img { transform: scale(1.03); }
+
+.embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--shade);
+}
+.embed iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;      /* so a shorter frame doesn't stretch into a grey gap */
+  gap: 10px;
+}
+
+/* headings + copy */
+
+h1, h2 {
+  font-size: inherit;
+  font-weight: 400;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+}
+
+h1.display {
+  font-size: 32px;
+  line-height: 1.08;
+  letter-spacing: 0.15em;
+  margin: 0 0 6px;
+}
+
+.section-label {
+  color: var(--muted);
+  margin: 36px 0 2px;
+}
+
+.lede { max-width: 46em; }
+.lede em { font-style: italic; }
+
+.link-inline {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 700;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: color 160ms ease, transform 220ms var(--ease);
+}
+.link-inline:hover { color: var(--accent); transform: translateX(3px); }
+
+.link-plain {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.link-plain:hover { color: var(--accent); border-color: currentColor; }
+
+.meta {
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+/* rows used by contact */
+
+.rows { margin: 0 0 30px; border-top: 1px solid var(--rule); }
+
+.row {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 0 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.row > dt { color: var(--muted); text-transform: lowercase; }
+.row > dd { margin: 0; }
+
+/* the three discipline cards on the landing page */
+
+.disc-cards { border-top: 1px solid var(--rule); margin: 0 0 26px; }
+
+.disc-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 26px 76px minmax(0, 1fr) 18px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+.disc-card::before {
+  content: "";
+  position: absolute; inset: 0 -10px;
+  background: var(--shade);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 380ms var(--ease);
+  z-index: -1;
+}
+.disc-card:hover::before { transform: scaleX(1); }
+.disc-card-n { color: var(--muted); }
+.disc-card-t { color: var(--ink); text-transform: uppercase; letter-spacing: 0.11em; }
+.disc-card-b { color: var(--muted); }
+.disc-card-a {
+  text-align: right;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: opacity 240ms ease, transform 240ms var(--ease);
+}
+.disc-card:hover { color: var(--accent); }
+.disc-card:hover .disc-card-t,
+.disc-card:hover .disc-card-n { color: var(--accent); }
+.disc-card:hover .disc-card-a { opacity: 1; transform: none; }
+
+/* the numbered service list on each discipline page */
+
+.svc { border-top: 1px solid var(--rule); margin: 0 0 8px; }
+
+.svc-item {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.svc-n { color: var(--muted); }
+.svc-body h2 { margin: 0 0 5px; }
+.svc-body p { margin: 0 0 5px; }
+.svc-gets b { font-weight: 400; color: var(--muted); text-transform: lowercase; }
+.svc-body .svc-note { color: var(--muted); margin: 0; }
+
+/* gear page */
+
+.gear-group { margin-bottom: 30px; }
+.gear-group:last-of-type { margin-bottom: 34px; }
+
+.gear-list { border-top: 1px solid var(--rule); }
+
+.gear-row {
+  display: grid;
+  grid-template-columns: 152px minmax(0, 1fr) 14px;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+a.gear-row { transition: color 140ms ease, padding-left 240ms var(--ease); }
+a.gear-row:hover { color: var(--accent); padding-left: 6px; }
+
+.gear-name { color: var(--ink); }
+a.gear-row:hover .gear-name { color: var(--accent); }
+.gear-note { color: var(--muted); }
+.gear-link {
+  text-align: right;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 200ms ease, transform 200ms var(--ease);
+}
+a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent); }
+
+/* index of work */
+
+.index-list { border-top: 1px solid var(--rule); margin-bottom: 30px; }
+.index-list a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 118px 56px;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  transition: color 140ms ease, padding-left 240ms var(--ease);
+}
+.index-list a:hover { color: var(--accent); padding-left: 6px; }
+.index-list .c2, .index-list .c3 { color: var(--muted); }
+.index-list .c3 { text-align: right; }
+
+/* "more — please dm for details", appended to every work index */
+.index-list a.dm-row {
+  grid-template-columns: minmax(0, 1fr) 20px;
+  color: var(--muted);
+}
+.index-list a.dm-row:hover { color: var(--accent); }
+.dm-arrow {
+  text-align: right;
+  transform: translateX(-4px);
+  opacity: 0;
+  transition: opacity 200ms ease, transform 200ms var(--ease);
+}
+.index-list a.dm-row:hover .dm-arrow { opacity: 1; transform: none; }
+
+.sidebar li a.nav-dm {
+  color: var(--muted);
+  margin-top: 10px;
+}
+.sidebar li a.nav-dm:hover { color: var(--accent); }
+
+.back {
+  display: inline-block;
+  color: var(--muted);
+  margin-bottom: 22px;
+  text-transform: lowercase;
+  transition: color 140ms ease, transform 240ms var(--ease);
+}
+.back:hover { color: var(--accent); transform: translateX(-4px); }
+
+/* tracks (sound work) */
+
+.tracks { border-top: 1px solid var(--rule); margin: 0 0 26px; }
+
+.track {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  width: 100%;
+  padding: 9px 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--ink-soft);
+  text-align: left;
+  cursor: pointer;
+  transition: color 140ms ease, padding-left 240ms var(--ease);
+}
+.track:hover { color: var(--accent); padding-left: 6px; }
+.track .n, .track .d { color: var(--muted); }
+.track[data-state="playing"] { color: var(--ink); }
+
+/* fixed audio bar */
+
+.player {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 15;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 22px;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px 11px;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+}
+.player[hidden] { display: none; }
+.player button { font: inherit; background: none; border: 0; color: var(--ink); cursor: pointer; padding: 0; }
+.player button:hover { color: var(--accent); }
+.player-meta { display: flex; justify-content: space-between; gap: 16px; }
+.player-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-time { color: var(--muted); white-space: nowrap; }
+.player-bar { grid-column: 2; height: 1px; background: var(--rule); cursor: pointer; }
+.player-bar span { display: block; height: 100%; width: 0; background: var(--accent); }
+
+/* ------------------------------------------------------- page transition */
+/* Six slats sweep down and cover the screen, the destination flashes like a
+   clapperboard slate, then the slats sweep away off the bottom.
+   Timings here are mirrored in app.js — change both together. */
+
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  visibility: hidden;
+  pointer-events: none;
+}
+.wipe.is-active { visibility: visible; pointer-events: auto; }
+
+.wipe-col {
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+@keyframes slatDown { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes slatUp   { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+
+.wipe.is-covering .wipe-col {
+  animation: slatDown 240ms cubic-bezier(.76, 0, .24, 1) both;
+  animation-delay: calc(var(--i) * 26ms);
+}
+.wipe.is-revealing .wipe-col {
+  transform-origin: bottom center;
+  animation: slatUp 240ms cubic-bezier(.76, 0, .24, 1) both;
+  animation-delay: calc((5 - var(--i)) * 26ms);
+}
+
+.wipe-slate {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--bg);
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.75em;
+  text-indent: 0.75em;
+  opacity: 0;
+}
+.wipe-slate::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 20px);
+  width: 90px; height: 1px;
+  background: var(--accent);
+  transform: translateX(-50%) scaleX(0);
+}
+
+@keyframes slateIn  { from { opacity: 0; letter-spacing: 0.3em; } to { opacity: 1; letter-spacing: 0.75em; } }
+@keyframes slateOut { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ruleOut  { from { transform: translateX(-50%) scaleX(0); } to { transform: translateX(-50%) scaleX(1); } }
+
+.wipe.is-covering  .wipe-slate { animation: slateIn 260ms var(--ease) 170ms both; }
+.wipe.is-covering  .wipe-slate::after { animation: ruleOut 340ms var(--ease) 210ms both; }
+.wipe.is-revealing .wipe-slate { animation: slateOut 150ms ease both; }
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 860px) {
+  body { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding: 24px var(--gutter) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+  .tagline { margin-bottom: 0; flex: 1 1 auto; }
+  .controls { margin-bottom: 0; }
+  .menu-toggle { display: block; }
+
+  .sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 300ms var(--ease);
+  }
+  .sidebar-nav.is-open { max-height: 180vh; }
+  .nav-block:first-child { margin-top: 20px; }
+  .sidebar li a { padding: 3.5px 0; }        /* bigger tap targets on touch */
+  .sidebar-foot { grid-column: 1 / -1; margin-top: 0; padding-bottom: 22px; }
+
+  main { padding: 26px var(--gutter) 120px; min-height: 0; }
+  .view { max-width: 560px; }
+  h1.display { font-size: 24px; letter-spacing: 0.12em; }
+  .row { grid-template-columns: 1fr; gap: 0; }
+  .index-list a { grid-template-columns: minmax(0, 1fr) 56px; }
+  .index-list .c2 { display: none; }
+  .disc-card { grid-template-columns: 22px minmax(0, 1fr) 16px; }
+  .disc-card-b { grid-column: 2 / -1; }
+  .gear-row { grid-template-columns: minmax(0, 1fr) 14px; gap: 0 12px; }
+  .gear-note { grid-column: 1; }
+  .gear-link { grid-row: 1; grid-column: 2; opacity: 1; transform: none; }
+  .wipe-slate { font-size: 11px; letter-spacing: 0.5em; text-indent: 0.5em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .wipe { display: none; }
+}
