@@ -535,6 +535,34 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
 }
 .back:hover { color: var(--accent); transform: translateX(-4px); }
 
+/* rates — same rhythm as the gear list, with the number holding the right edge
+   so the column reads as a price list at a glance */
+
+.rate-group { margin-bottom: 34px; }
+
+.rate-list { border-top: 1px solid var(--rule); }
+
+.rate-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 0 18px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rate-name  { color: var(--ink); }
+.rate-note  { color: var(--muted); }
+.rate-price { color: var(--ink); white-space: nowrap; }
+
+.rate-note-foot {
+  color: var(--muted);
+  max-width: 42ch;
+  margin: 30px 0 26px;
+  padding-left: 14px;
+  border-left: 1px solid var(--rule);
+}
+
 /* tracks (sound work) */
 
 .tracks { border-top: 1px solid var(--rule); margin: 0 0 26px; }
@@ -699,6 +727,10 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
   .disc-card-b { grid-column: 2 / -1; }
   .gear-row { grid-template-columns: minmax(0, 1fr) 14px; gap: 0 12px; }
   .gear-note { grid-column: 1; }
+  /* name over note on the left, price stays pinned right */
+  .rate-row { grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; }
+  .rate-note { grid-column: 1; grid-row: 2; }
+  .rate-price { grid-column: 2; grid-row: 1; }
   .gear-link { grid-row: 1; grid-column: 2; opacity: 1; transform: none; }
   .wipe-slate { font-size: 11px; letter-spacing: 0.5em; text-indent: 0.5em; }
 }

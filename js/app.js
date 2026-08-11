@@ -166,6 +166,7 @@
       { href: "#/work",    label: ui("navWork") },
       { href: "#/about",   label: ui("navAbout") },
       { href: "#/gear",    label: ui("navGear") },
+      { href: "#/rates",   label: ui("navRates") },
       { href: "#/contact", label: ui("navContact") }
     ].map(function (p) {
       return '<li><a href="' + p.href + '">' + esc(p.label) + "</a></li>";
@@ -339,6 +340,29 @@
            cta(g.cta);
   }
 
+  function viewRates() {
+    var r = C.rates;
+    if (!r) return viewMissing();
+
+    return '<h1 class="display">' + esc(t(r.headline)) + "</h1>" +
+           (r.intro ? '<div class="lede"><p>' + rich(t(r.intro)) + "</p></div>" : "") +
+           r.groups.map(function (grp) {
+             return '<section class="rate-group">' +
+               '<h2 class="section-label">' + esc(t(grp.title)) + "</h2>" +
+               '<div class="rate-list">' + grp.items.map(function (it) {
+                 var p = t(it.price);
+                 // a number takes the currency; a word ("dm") stands on its own
+                 var money = /\d/.test(p) ? p + " " + (r.unit || "") : p;
+                 return '<div class="rate-row">' +
+                        '<span class="rate-name">' + esc(t(it.name)) + "</span>" +
+                        '<span class="rate-note">' + esc(t(it.note) || "") + "</span>" +
+                        '<span class="rate-price">' + esc(money) + "</span></div>";
+               }).join("") + "</div></section>";
+           }).join("") +
+           (r.note ? '<p class="rate-note-foot">' + rich(t(r.note)) + "</p>" : "") +
+           cta(r.cta);
+  }
+
   function viewContact() {
     var c = C.contact;
     return '<h1 class="display">' + esc(t(c.headline)) + "</h1>" +
@@ -404,6 +428,9 @@
 
     if (parts[0] === "gear")
       return { html: viewGear(), title: ui("navGear") + suffix, slate: ui("navGear") };
+
+    if (parts[0] === "rates")
+      return { html: viewRates(), title: ui("navRates") + suffix, slate: ui("navRates") };
 
     if (parts[0] === "contact")
       return { html: viewContact(), title: ui("navContact") + suffix, slate: ui("navContact") };

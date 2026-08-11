@@ -28,7 +28,8 @@ const CONTENT = {
 
   ui: {
     en: {
-      navWork: "work index", navAbout: "about", navGear: "gear", navContact: "contact",
+      navWork: "work index", navAbout: "about", navGear: "gear",
+      navRates: "price rate", navContact: "contact",
       workLabel: "work", menu: "menu", close: "close",
       themeToDark: "switch to dark", themeToLight: "switch to light",
       dmWork: "more — dm for details",
@@ -39,7 +40,8 @@ const CONTENT = {
       back: "back"
     },
     th: {
-      navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์", navContact: "ติดต่อ",
+      navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์",
+      navRates: "เรทราคา", navContact: "ติดต่อ",
       workLabel: "งาน", menu: "เมนู", close: "ปิด",
       themeToDark: "เปลี่ยนเป็นธีมมืด", themeToLight: "เปลี่ยนเป็นธีมสว่าง",
       dmWork: "งานอื่น ๆ ทักมาถามได้",
@@ -418,6 +420,65 @@ const CONTENT = {
       }
     ],
     cta: { label: { en: "START A PROJECT", th: "ทักมาคุยกัน" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
+  },
+
+  /* ----------------------------------------------------------------- rates */
+  /* `price` is a { en, th } pair only where it's words ("dm me"). A number is
+     a plain string so it reads the same in both languages. */
+
+  rates: {
+    headline: { en: "PRICE RATE", th: "เรทราคา" },
+    intro: {
+      en: "ranges, not fixed numbers — where a job lands depends on how long it runs, how far it is and how much post it needs. tell me what you're making and i'll give you one number.",
+      th: "เป็นช่วงราคา ไม่ใช่ราคาตายตัว — ขึ้นอยู่กับงานยาวแค่ไหน ไปไกลแค่ไหน แล้วต้องตัดต่อเยอะแค่ไหน บอกมาว่าจะทำอะไร เดี๋ยวตีราคาให้เป็นตัวเลขเดียว"
+    },
+    groups: [
+      {
+        title: { en: "photography", th: "ถ่ายภาพ" },
+        items: [
+          { name: { en: "photoshoot",   th: "ถ่ายภาพ" },
+            note: { en: "per hour",     th: "ต่อชั่วโมง" }, price: "175–300" },
+          { name: { en: "couple photo", th: "ถ่ายคู่" },
+            note: { en: "per hour",     th: "ต่อชั่วโมง" }, price: "175–300" },
+          { name: { en: "school event", th: "งานโรงเรียน" },
+            note: { en: "full event",   th: "ทั้งงาน" },    price: "250–400" }
+        ]
+      },
+      {
+        title: { en: "videography", th: "ถ่ายวิดีโอ" },
+        items: [
+          { name: { en: "short clips",        th: "คลิปสั้น" },
+            note: { en: "15–30 sec",          th: "15–30 วินาที" },     price: "80–150" },
+          { name: { en: "content",            th: "คอนเทนต์" },
+            note: { en: "3–10 min",           th: "3–10 นาที" },        price: "200–300" },
+          { name: { en: "school event",       th: "งานโรงเรียน" },
+            note: { en: "full event",         th: "ทั้งงาน" },          price: "300–450" },
+          { name: { en: "live / studio session", th: "งานไลฟ์ / สตูดิโอ" },
+            note: { en: "session video",      th: "วิดีโอเซสชัน" },      price: "500–1,000" },
+          { name: { en: "music video",        th: "มิวสิกวิดีโอ" },
+            note: { en: "footage only",       th: "เฉพาะฟุตเทจ" },       price: "400–600" }
+        ]
+      },
+      {
+        title: { en: "post", th: "งานตัดต่อ" },
+        items: [
+          { name: { en: "simple edit",  th: "ตัดต่อแบบง่าย" },
+            note: { en: "on top of footage",  th: "บวกเพิ่มจากค่าถ่าย" },  price: "100–300" },
+          { name: { en: "full session", th: "เซสชันเต็ม" },
+            note: { en: "interview + colour grade", th: "สัมภาษณ์ + เกรดสี" }, price: "2,000" },
+          { name: { en: "edited music video", th: "มิวสิกวิดีโอตัดจบ" },
+            note: { en: "scope decides it", th: "แล้วแต่ขนาดงาน" },
+            price: { en: "dm", th: "ทักมา" } }
+        ]
+      }
+    ],
+    unit: "THB",
+    /* the line off the bottom of the price sheet */
+    note: {
+      en: "i'd rather do forty interesting jobs than four expensive boring ones. i'll take the brief nobody else wants. — rivi",
+      th: "ขอทำงานที่น่าสนใจสี่สิบงาน ดีกว่างานแพงแต่น่าเบื่อสี่งาน งานที่ไม่มีใครอยากทำ เอามาได้เลย — rivi"
+    },
+    cta: { label: { en: "GET A NUMBER", th: "ขอราคา" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
   },
 
   /* ----------------------------------------------------------------- work */
