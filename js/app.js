@@ -260,7 +260,8 @@
 
   function viewHome() {
     var h = C.home;
-    return (h.cover ? '<div class="media">' + figure(img(h.cover.src, h.cover.alt, true)) + "</div>" : "") +
+    return (h.cover ? '<div class="media' + (h.cover.mark ? " media-mark" : "") + '">' +
+                      figure(img(h.cover.src, h.cover.alt, true)) + "</div>" : "") +
            '<h1 class="display">' + esc(t(h.headline)) + "</h1>" +
            '<div class="lede">' + paras(h.body) + "</div>" +
            '<div class="disc-cards">' + DISC_ORDER.map(function (k, i) {

@@ -282,6 +282,13 @@ main {
 
 .media { margin: 0 0 26px; }
 .media figure { margin: 0 0 10px; }
+
+/* a logo mark, not a photograph — hold it small so the headline and the first
+   paragraph still land above the fold next to it */
+.media-mark { margin-bottom: 18px; }
+.media-mark .frame { width: 132px; background: none; }
+.media-mark .frame:hover img { transform: none; }
+
 .media figcaption { color: var(--muted); margin-top: 7px; }
 
 @keyframes unveil {

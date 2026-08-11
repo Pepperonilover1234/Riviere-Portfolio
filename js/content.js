@@ -52,7 +52,9 @@ const CONTENT = {
   /* -------------------------------------------------------------- landing */
 
   home: {
-    cover: { src: "assets/img/cover.svg", alt: "Reverie" },
+    /* mark: true keeps the logo small so the headline and copy sit on the
+       first screen with it, instead of a full-width image pushing them down */
+    cover: { src: "assets/img/logo.svg", alt: "Reverie", mark: true },
     headline: "REVERIE",
     body: {
       en: [
@@ -540,27 +542,26 @@ const CONTENT = {
       ]
     },
     {
-      /* PLACEHOLDER — this whole entry is invented, and the three mp3s below
-         do not exist, so the player will say so if anyone clicks them.
-         It's the only thing holding the sound page up. Replace it with a real
-         track or delete the block entirely. */
-      discipline: "sound", slug: "silver-lining",
-      client: { en: "silver lining ep", th: "silver lining ep" },
-      title:  { en: "SILVER LINING — EP", th: "SILVER LINING — EP" },
+      /* The two mp3s below do not exist yet — drop the real files in at these
+         paths (or change the paths) or the player will report them missing.
+         Track lengths are omitted on purpose; add `length: "3:41"` to a track
+         once you know it and it shows on the right of the row. */
+      discipline: "sound", slug: "somewhere-between",
+      client: { en: "somewhere between", th: "somewhere between" },
+      title:  { en: "SOMEWHERE BETWEEN", th: "SOMEWHERE BETWEEN" },
       year: "2026",
       role:  { en: "production / mix / master", th: "โปรดิวซ์ / มิกซ์ / มาสเตอร์" },
-      kind:  { en: "music production", th: "โปรดิวซ์เพลง" },
+      kind:  { en: "singles", th: "ซิงเกิล" },
       blurb: {
-        en: ["written, produced, mixed and mastered in-house. live drums tracked in one room over a weekend, everything else in the box."],
-        th: ["แต่ง โปรดิวซ์ มิกซ์ และมาสเตอร์เองทั้งหมด กลองสดอัดในห้องเดียวจบในสุดสัปดาห์ ที่เหลือทำในคอม"]
+        en: ["two singles — <b>interlude</b> and <b>CDXVII</b> — written, produced, mixed and mastered in-house."],
+        th: ["สองซิงเกิล — <b>interlude</b> และ <b>CDXVII</b> — แต่ง โปรดิวซ์ มิกซ์ และมาสเตอร์เองทั้งหมด"]
       },
       media: [
         { type: "audio", tracks: [
-          { title: "silver lining",   src: "assets/media/sound/track-01.mp3", length: "3:41" },
-          { title: "low ceiling",     src: "assets/media/sound/track-02.mp3", length: "2:58" },
-          { title: "nine to nowhere", src: "assets/media/sound/track-03.mp3", length: "4:12" }
+          { title: "interlude", src: "assets/media/sound/interlude.mp3" },
+          { title: "CDXVII",    src: "assets/media/sound/cdxvii.mp3" }
         ] },
-        { type: "image", src: "assets/img/sound.svg", alt: "EP artwork",
+        { type: "image", src: "assets/img/logo.svg", alt: "Artwork",
           caption: { en: "artwork", th: "ปกเพลง" } }
       ]
     }

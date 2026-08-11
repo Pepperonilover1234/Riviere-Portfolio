@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1656" height="1490" viewBox="0 0 1656 1490" role="img" aria-label="K">
+  <rect width="100%" height="100%" fill="#e2e0da"/>
+  <g fill="#0d0d0d">
+    <!-- stem -->
+    <path d="M668 341 H860 L425 1112 H231 Z"/>
+    <!-- upper arm -->
+    <path d="M1137 341 H1332 L1118 713 H922 Z"/>
+    <!-- lower leg -->
+    <path d="M700 745 L897 742 L1110 1140 L1005 1292 Z"/>
+  </g>
+</svg>

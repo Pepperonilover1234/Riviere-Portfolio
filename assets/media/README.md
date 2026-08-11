@@ -45,7 +45,7 @@ player shows a black box.
 
 ```js
 { type: "audio", tracks: [
-  { title: "silver lining", src: "assets/media/sound/silver-lining.mp3", length: "3:41" }
+  { title: "interlude", src: "assets/media/sound/interlude.mp3", length: "3:41" }
 ] }
 ```
 
