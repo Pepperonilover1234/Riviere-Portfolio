@@ -361,10 +361,7 @@
 
   function viewProject(w) {
     var meta = [w.year, t(w.role), t(w.kind)].filter(Boolean).map(esc).join(" &nbsp;·&nbsp; ");
-    var d = C.disciplines[w.discipline];
-    return '<a class="back" href="#/' + esc(w.discipline || "work") + '">&#8592; ' +
-             esc(d ? t(d.label) : ui("navWork")) + "</a>" +
-           '<div class="media">' + renderMedia(w.media) + "</div>" +
+    return '<div class="media">' + renderMedia(w.media) + "</div>" +
            "<h1>" + esc(t(w.title) || t(w.client)) + "</h1>" +
            '<p class="meta">' + meta + "</p>" +
            '<div class="lede">' + paras(w.blurb) + "</div>" +
@@ -377,6 +374,19 @@
   }
 
   /* -------------------------------------------------------------- router */
+
+  // Every page except the landing gets one. It walks the history rather than
+  // pointing at a fixed parent, so it undoes whatever the visitor actually did
+  // — and since the boot code forces the first paint to #/, anything deeper was
+  // reached by a hash change, which means there is always a step to go back to.
+  function backBtn() {
+    return '<button class="back" type="button" id="back-btn">&#8592; ' +
+           esc(ui("back")) + "</button>";
+  }
+
+  function isHome(hash) {
+    return hash.replace(/^#\/?/, "").split("/").filter(Boolean).length === 0;
+  }
 
   function resolve(hash) {
     var parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -419,6 +429,8 @@
     for (var i = 0; i < kids.length; i++) kids[i].style.setProperty("--i", i);
 
     window.scrollTo(0, 0);
+    var back = document.getElementById("back-btn");
+    if (back) back.addEventListener("click", function () { history.back(); });
     bindTracks();
     if (audio.paused && !audio.duration) bar.hidden = true;
   }
@@ -429,6 +441,7 @@
   function route(slateOverride) {
     var hash = location.hash || "#/";
     var page = resolve(hash);
+    if (!isHome(hash)) page.html = backBtn() + page.html;
     markCurrent(hash);
     if (sidebarNav.classList.contains("is-open")) toggle.click();
 

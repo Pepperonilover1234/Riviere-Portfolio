@@ -35,7 +35,8 @@ const CONTENT = {
       selectedWork: "SELECTED {x} WORK", allWork: "ALL WORK",
       workWithMe: "WORK WITH ME", youGet: "you get",
       notFoundTitle: "NOT HERE", notFoundBody: "that page doesn't exist (yet).",
-      backHome: "BACK TO THE START", missingFile: "missing file — add "
+      backHome: "BACK TO THE START", missingFile: "missing file — add ",
+      back: "back"
     },
     th: {
       navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์", navContact: "ติดต่อ",
@@ -45,7 +46,8 @@ const CONTENT = {
       selectedWork: "งาน{x}ที่เลือกมา", allWork: "งานทั้งหมด",
       workWithMe: "อยากทำงานด้วยกัน", youGet: "ได้อะไร",
       notFoundTitle: "ไม่มีหน้านี้", notFoundBody: "หน้านี้ยังไม่มี",
-      backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ "
+      backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ ",
+      back: "ย้อนกลับ"
     }
   },
 

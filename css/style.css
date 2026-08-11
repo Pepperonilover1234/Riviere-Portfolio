@@ -204,17 +204,22 @@ img, video { display: block; max-width: 100%; height: auto; }
   transition: transform 420ms var(--ease), opacity 260ms ease;
 }
 
+/* A boxed target rather than an underlined word — the old one was about 40x14,
+   which is a hard thing to hit with a thumb. 44px is the usual floor. */
 .menu-toggle {
   display: none;
   font: inherit;
   letter-spacing: var(--track);
   color: var(--ink);
   background: none;
-  border: 0;
-  border-bottom: 1px solid var(--rule);
-  padding: 0 0 1px;
+  border: 1px solid var(--rule);
+  min-height: 44px;
+  padding: 0 18px;
   cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
 }
+.menu-toggle:hover { border-color: var(--ink); }
+.menu-toggle[aria-expanded="true"] { border-color: var(--ink); color: var(--ink); }
 
 .nav-block { margin-bottom: 26px; }
 
@@ -511,10 +516,20 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
 }
 .sidebar li a.nav-dm:hover { color: var(--accent); }
 
+/* on every page but the landing — a button, not a link, because it walks the
+   history rather than going to a fixed address */
 .back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  font: inherit;
+  letter-spacing: var(--track);
   color: var(--muted);
-  margin-bottom: 22px;
+  background: none;
+  border: 0;
+  min-height: 40px;
+  padding: 0 14px 0 0;
+  margin-bottom: 8px;
+  cursor: pointer;
   text-transform: lowercase;
   transition: color 140ms ease, transform 240ms var(--ease);
 }
@@ -646,10 +661,19 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
     padding: 24px var(--gutter) 0;
     border-bottom: 1px solid var(--rule);
   }
-  .sidebar-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
-  .tagline { margin-bottom: 0; flex: 1 1 auto; }
-  .controls { margin-bottom: 0; }
-  .menu-toggle { display: block; }
+  /* An explicit 2x2: wordmark + menu on top, tagline + language/theme under it.
+     Left to wrap on its own the button either stranded itself on an empty line
+     or landed between the wordmark and the tagline. */
+  .sidebar-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 12px;
+  }
+  .wordmark  { grid-area: 1 / 1; }
+  .menu-toggle { grid-area: 1 / 2; display: block; justify-self: end; }
+  .tagline   { grid-area: 2 / 1; margin-bottom: 0; }
+  .controls  { grid-area: 2 / 2; margin-bottom: 0; justify-self: end; }
 
   .sidebar-nav {
     display: grid;
@@ -662,6 +686,7 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
   .sidebar-nav.is-open { max-height: 180vh; }
   .nav-block:first-child { margin-top: 20px; }
   .sidebar li a { padding: 3.5px 0; }        /* bigger tap targets on touch */
+  .back { min-height: 44px; padding-right: 18px; }
   .sidebar-foot { grid-column: 1 / -1; margin-top: 0; padding-bottom: 22px; }
 
   main { padding: 26px var(--gutter) 120px; min-height: 0; }
