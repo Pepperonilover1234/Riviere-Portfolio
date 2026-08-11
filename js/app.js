@@ -526,6 +526,16 @@
 
   /* ---------------------------------------------------------------- boot */
 
+  // Always open on the home page: a stale bookmark or a hash left over from a
+  // previous visit shouldn't drop a first-time visitor deep inside the site.
+  // replaceState (not location.hash) so this never fires hashchange and never
+  // leaves the old route in history.
+  if (location.hash && location.hash !== "#/") {
+    try {
+      history.replaceState(null, "", location.pathname + location.search + "#/");
+    } catch (e) { location.replace("#/"); }        // file:// in some browsers
+  }
+
   document.documentElement.setAttribute("lang", LANG);
   buildNav();
   window.addEventListener("hashchange", function () { route(); });   // no event arg through
