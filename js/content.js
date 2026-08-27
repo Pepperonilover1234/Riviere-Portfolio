@@ -28,37 +28,31 @@ const CONTENT = {
 
   ui: {
     en: {
-      navWork: "work index", navAbout: "about", navGear: "gear",
-      navRates: "price rate", navContact: "contact",
+      navWork: "work index", navAbout: "about", navGear: "gear", navContact: "contact",
       workLabel: "work", menu: "menu", close: "close",
       themeToDark: "switch to dark", themeToLight: "switch to light",
       dmWork: "more — dm for details",
       selectedWork: "SELECTED {x} WORK", allWork: "ALL WORK",
-      workWithMe: "WORK WITH ME", youGet: "you get",
+      workWithMe: "WORK WITH ME", youGet: "you get", services: "SERVICES",
       notFoundTitle: "NOT HERE", notFoundBody: "that page doesn't exist (yet).",
-      backHome: "BACK TO THE START", missingFile: "missing file — add ",
-      back: "back"
+      backHome: "BACK TO THE START", missingFile: "missing file — add "
     },
     th: {
-      navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์",
-      navRates: "เรทราคา", navContact: "ติดต่อ",
+      navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์", navContact: "ติดต่อ",
       workLabel: "งาน", menu: "เมนู", close: "ปิด",
       themeToDark: "เปลี่ยนเป็นธีมมืด", themeToLight: "เปลี่ยนเป็นธีมสว่าง",
       dmWork: "งานอื่น ๆ ทักมาถามได้",
       selectedWork: "งาน{x}ที่เลือกมา", allWork: "งานทั้งหมด",
-      workWithMe: "อยากทำงานด้วยกัน", youGet: "ได้อะไร",
+      workWithMe: "อยากทำงานด้วยกัน", youGet: "ได้อะไร", services: "บริการ",
       notFoundTitle: "ไม่มีหน้านี้", notFoundBody: "หน้านี้ยังไม่มี",
-      backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ ",
-      back: "ย้อนกลับ"
+      backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ "
     }
   },
 
   /* -------------------------------------------------------------- landing */
 
   home: {
-    /* mark: true keeps the logo small so the headline and copy sit on the
-       first screen with it, instead of a full-width image pushing them down */
-    cover: { src: "assets/img/logo.svg", alt: "Reverie", mark: true },
+    cover: { src: "assets/media/photo/dsc08593.jpg", alt: "Reverie" },
     headline: "REVERIE",
     body: {
       en: [
@@ -85,7 +79,7 @@ const CONTENT = {
       label:    { en: "film", th: "วิดีโอ" },
       headline: { en: "FILM", th: "วิดีโอ" },
       blurb:    { en: "moving image, start to finish", th: "ภาพเคลื่อนไหว ตั้งแต่ต้นจนจบ" },
-      cover: { src: "assets/img/film.svg", alt: "Film work" },
+      cover: { src: "assets/media/photo/dsc08617.jpg", alt: "Film work" },
       intro: {
         en: [
           "i direct, shoot, cut, grade and mix. that means one person carries the idea from the first frame to the final export, and nothing gets lost in a handover.",
@@ -142,7 +136,7 @@ const CONTENT = {
       label:    { en: "photo",  th: "ภาพ" },
       headline: { en: "PHOTO",  th: "ภาพ" },
       blurb:    { en: "stills that don't look stock", th: "ภาพนิ่งที่ไม่เหมือนภาพสต็อก" },
-      cover: { src: "assets/img/photo.svg", alt: "Photo work" },
+      cover: { src: "assets/media/photo/dsc08682.jpg", alt: "Photo work" },
       intro: {
         en: [
           "digital and 35mm film, studio or on location. i shoot tight sets rather than huge galleries — fewer frames, all of them usable.",
@@ -184,7 +178,7 @@ const CONTENT = {
       label:    { en: "sound", th: "เสียง" },
       headline: { en: "SOUND", th: "เสียง" },
       blurb:    { en: "written, recorded, mixed", th: "แต่ง อัด มิกซ์" },
-      cover: { src: "assets/img/sound.svg", alt: "Sound work" },
+      cover: { src: "assets/media/photo/dsc08620.jpg", alt: "Sound work" },
       intro: {
         en: [
           "the half of the job most video people outsource. i write, produce, mix and master in-house, which is why the picture and the music actually land together.",
@@ -422,65 +416,6 @@ const CONTENT = {
     cta: { label: { en: "START A PROJECT", th: "ทักมาคุยกัน" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
   },
 
-  /* ----------------------------------------------------------------- rates */
-  /* `price` is a { en, th } pair only where it's words ("dm me"). A number is
-     a plain string so it reads the same in both languages. */
-
-  rates: {
-    headline: { en: "PRICE RATE", th: "เรทราคา" },
-    intro: {
-      en: "ranges, not fixed numbers — where a job lands depends on how long it runs, how far it is and how much post it needs. tell me what you're making and i'll give you one number.",
-      th: "เป็นช่วงราคา ไม่ใช่ราคาตายตัว — ขึ้นอยู่กับงานยาวแค่ไหน ไปไกลแค่ไหน แล้วต้องตัดต่อเยอะแค่ไหน บอกมาว่าจะทำอะไร เดี๋ยวตีราคาให้เป็นตัวเลขเดียว"
-    },
-    groups: [
-      {
-        title: { en: "photography", th: "ถ่ายภาพ" },
-        items: [
-          { name: { en: "photoshoot",   th: "ถ่ายภาพ" },
-            note: { en: "per hour",     th: "ต่อชั่วโมง" }, price: "175–300" },
-          { name: { en: "couple photo", th: "ถ่ายคู่" },
-            note: { en: "per hour",     th: "ต่อชั่วโมง" }, price: "175–300" },
-          { name: { en: "school event", th: "งานโรงเรียน" },
-            note: { en: "full event",   th: "ทั้งงาน" },    price: "250–400" }
-        ]
-      },
-      {
-        title: { en: "videography", th: "ถ่ายวิดีโอ" },
-        items: [
-          { name: { en: "short clips",        th: "คลิปสั้น" },
-            note: { en: "15–30 sec",          th: "15–30 วินาที" },     price: "80–150" },
-          { name: { en: "content",            th: "คอนเทนต์" },
-            note: { en: "3–10 min",           th: "3–10 นาที" },        price: "200–300" },
-          { name: { en: "school event",       th: "งานโรงเรียน" },
-            note: { en: "full event",         th: "ทั้งงาน" },          price: "300–450" },
-          { name: { en: "live / studio session", th: "งานไลฟ์ / สตูดิโอ" },
-            note: { en: "session video",      th: "วิดีโอเซสชัน" },      price: "500–1,000" },
-          { name: { en: "music video",        th: "มิวสิกวิดีโอ" },
-            note: { en: "footage only",       th: "เฉพาะฟุตเทจ" },       price: "400–600" }
-        ]
-      },
-      {
-        title: { en: "post", th: "งานตัดต่อ" },
-        items: [
-          { name: { en: "simple edit",  th: "ตัดต่อแบบง่าย" },
-            note: { en: "on top of footage",  th: "บวกเพิ่มจากค่าถ่าย" },  price: "100–300" },
-          { name: { en: "full session", th: "เซสชันเต็ม" },
-            note: { en: "interview + colour grade", th: "สัมภาษณ์ + เกรดสี" }, price: "2,000" },
-          { name: { en: "edited music video", th: "มิวสิกวิดีโอตัดจบ" },
-            note: { en: "scope decides it", th: "แล้วแต่ขนาดงาน" },
-            price: { en: "dm", th: "ทักมา" } }
-        ]
-      }
-    ],
-    unit: "THB",
-    /* the line off the bottom of the price sheet */
-    note: {
-      en: "i'd rather do forty interesting jobs than four expensive boring ones. i'll take the brief nobody else wants. — rivi",
-      th: "ขอทำงานที่น่าสนใจสี่สิบงาน ดีกว่างานแพงแต่น่าเบื่อสี่งาน งานที่ไม่มีใครอยากทำ เอามาได้เลย — rivi"
-    },
-    cta: { label: { en: "GET A NUMBER", th: "ขอราคา" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
-  },
-
   /* ----------------------------------------------------------------- work */
   /*
      Everything a visitor reads here is a { en, th } pair, same as the rest of
@@ -522,7 +457,7 @@ const CONTENT = {
            near 80 MB) and save it over this exact filename — nothing here needs
            to change. A `poster` frame is worth adding too, otherwise the player
            shows a black rectangle until enough of the file has buffered. */
-        { type: "video", src: "assets/media/film/roam-travel-vlog.mp4", caption: "1:19" }
+        { type: "image", src: "assets/img/film.svg", alt: "Travel vlog" }
       ]
     },
     /* "sports day" removed — it was an invented write-up on placeholder images.
@@ -545,7 +480,7 @@ const CONTENT = {
       media: [
         /* 1:33, 1920x1080, 11 Mbps, 121 MB — a far saner export than the vlog,
            though still worth getting down to ~8 Mbps before publishing. */
-        { type: "video", src: "assets/media/film/is-it-really-you-cover.mp4", caption: "1:32" }
+        { type: "image", src: "assets/img/film.svg", alt: "Live session" }
       ]
     },
     {
@@ -605,26 +540,27 @@ const CONTENT = {
       ]
     },
     {
-      /* The two mp3s below do not exist yet — drop the real files in at these
-         paths (or change the paths) or the player will report them missing.
-         Track lengths are omitted on purpose; add `length: "3:41"` to a track
-         once you know it and it shows on the right of the row. */
-      discipline: "sound", slug: "somewhere-between",
-      client: { en: "somewhere between", th: "somewhere between" },
-      title:  { en: "SOMEWHERE BETWEEN", th: "SOMEWHERE BETWEEN" },
+      /* PLACEHOLDER — this whole entry is invented, and the three mp3s below
+         do not exist, so the player will say so if anyone clicks them.
+         It's the only thing holding the sound page up. Replace it with a real
+         track or delete the block entirely. */
+      discipline: "sound", slug: "silver-lining",
+      client: { en: "silver lining ep", th: "silver lining ep" },
+      title:  { en: "SILVER LINING — EP", th: "SILVER LINING — EP" },
       year: "2026",
       role:  { en: "production / mix / master", th: "โปรดิวซ์ / มิกซ์ / มาสเตอร์" },
-      kind:  { en: "singles", th: "ซิงเกิล" },
+      kind:  { en: "music production", th: "โปรดิวซ์เพลง" },
       blurb: {
-        en: ["two singles — <b>interlude</b> and <b>CDXVII</b> — written, produced, mixed and mastered in-house."],
-        th: ["สองซิงเกิล — <b>interlude</b> และ <b>CDXVII</b> — แต่ง โปรดิวซ์ มิกซ์ และมาสเตอร์เองทั้งหมด"]
+        en: ["written, produced, mixed and mastered in-house. live drums tracked in one room over a weekend, everything else in the box."],
+        th: ["แต่ง โปรดิวซ์ มิกซ์ และมาสเตอร์เองทั้งหมด กลองสดอัดในห้องเดียวจบในสุดสัปดาห์ ที่เหลือทำในคอม"]
       },
       media: [
         { type: "audio", tracks: [
-          { title: "interlude", src: "assets/media/sound/interlude.mp3" },
-          { title: "CDXVII",    src: "assets/media/sound/cdxvii.mp3" }
+          { title: "silver lining",   src: "assets/media/sound/track-01.mp3", length: "3:41" },
+          { title: "low ceiling",     src: "assets/media/sound/track-02.mp3", length: "2:58" },
+          { title: "nine to nowhere", src: "assets/media/sound/track-03.mp3", length: "4:12" }
         ] },
-        { type: "image", src: "assets/img/logo.svg", alt: "Artwork",
+        { type: "image", src: "assets/img/sound.svg", alt: "EP artwork",
           caption: { en: "artwork", th: "ปกเพลง" } }
       ]
     }

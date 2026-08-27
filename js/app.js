@@ -1,5 +1,5 @@
 /* ==================================================================
-   app.js — routing, rendering, language switching and the transition.
+   app.js — routing, rendering, language, theme and the transition.
    You shouldn't need to touch this file; the words live in content.js.
 ================================================================== */
 
@@ -13,7 +13,7 @@
   var navMain    = document.getElementById("nav-primary");
   var navWork    = document.getElementById("nav-work");
   var navLabel   = document.getElementById("nav-work-label");
-  var sidebarNav = document.getElementById("sidebar-nav");
+  var overlay    = document.getElementById("sidebar-nav");
   var toggle     = document.getElementById("menu-toggle");
   var langBox    = document.getElementById("lang");
   var wipe       = document.getElementById("wipe");
@@ -31,7 +31,7 @@
     var saved;
     try { saved = localStorage.getItem(STORE_KEY); } catch (e) { /* private mode */ }
     if (LANGS.indexOf(saved) > -1) return saved;
-    return /^th\b/i.test(navigator.language || "") ? "th" : "en";   // guess from the browser
+    return /^th\b/i.test(navigator.language || "") ? "th" : "en";
   })();
 
   // Pull the right string out of a { en, th } pair. A plain string — an email,
@@ -54,7 +54,7 @@
     try { localStorage.setItem(STORE_KEY, LANG); } catch (e) { /* ignore */ }
     document.documentElement.setAttribute("lang", LANG);
     buildNav();
-    route(LANG === "th" ? "ไทย" : "english");     // flash the new language on the slate
+    route(LANG === "th" ? "ไทย" : "english");
   }
 
   function buildLangToggle() {
@@ -71,9 +71,6 @@
   });
 
   /* --------------------------------------------------------------- theme */
-  /* The palette itself is pure CSS — this only records the visitor's choice
-     and lets it override the system preference. With nothing stored the site
-     follows the OS, which is why the attribute is removed rather than set. */
 
   var THEME_KEY = "reverie-theme";
   var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -86,7 +83,6 @@
   }
 
   function syncThemeBtn() {
-    // the icon shows the theme you're in; the label says what clicking does
     var next = activeTheme() === "dark" ? ui("themeToLight") : ui("themeToDark");
     themeBtn.setAttribute("aria-label", next);
     themeBtn.setAttribute("title", next);
@@ -95,11 +91,10 @@
   themeBtn.addEventListener("click", function () {
     var next = activeTheme() === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* private mode */ }
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* ignore */ }
     syncThemeBtn();
   });
 
-  // if they never picked, follow the OS live
   darkQuery.addEventListener("change", syncThemeBtn);
 
   /* ------------------------------------------------------------ helpers */
@@ -110,18 +105,17 @@
       .replace(/"/g, "&quot;");
   }
 
-  // Copy may contain <b>, <em>, <br>, <a href="…"> — keep those, drop the rest.
   function rich(s) {
     return esc(s)
       .replace(/&lt;(\/?)(b|em|i|strong|br)&gt;/g, "<$1$2>")
-      .replace(/&lt;a href=&quot;([^"<>]+)&quot;&gt;/g, '<a class="link-inline" href="$1">')
+      .replace(/&lt;a href=&quot;([^"<>]+)&quot;&gt;/g, '<a class="btn" href="$1">')
       .replace(/&lt;\/a&gt;/g, "</a>");
   }
 
-  function paras(list) {
+  function paras(list, cls) {
     var arr = t(list);
     return (Array.isArray(arr) ? arr : [arr]).map(function (p) {
-      return "<p>" + rich(p) + "</p>";
+      return "<p" + (cls ? ' class="' + cls + '"' : "") + ">" + rich(p) + "</p>";
     }).join("");
   }
 
@@ -132,13 +126,24 @@
     return null;
   }
 
-  function workIn(discipline) {
-    return C.work.filter(function (w) { return w.discipline === discipline; });
+  function workIn(d) { return C.work.filter(function (w) { return w.discipline === d; }); }
+
+  function btn(c, onDark) {
+    return c ? '<a class="btn" href="' + esc(c.href) + '">' + esc(t(c.label)) +
+               '<span aria-hidden="true">&rarr;</span></a>' : "";
   }
 
-  function cta(c) {
-    return c ? '<p><a class="link-inline" href="' + esc(c.href) + '">' +
-               esc(t(c.label)) + "</a></p>" : "";
+  var MARKS = '<div class="hero-marks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>';
+
+  // First real image in a project, used as its tile on the index grids.
+  function thumbOf(w) {
+    var m = w.media || [];
+    for (var i = 0; i < m.length; i++) {
+      if (m[i].type === "image") return m[i].src;
+      if (m[i].type === "images" && m[i].items && m[i].items[0]) return m[i].items[0].src;
+      if (m[i].type === "video" && m[i].poster) return m[i].poster;
+    }
+    return "assets/img/" + (w.discipline || "cover") + ".svg";
   }
 
   /* ------------------------------------------------------------ sidebar */
@@ -150,30 +155,33 @@
     });
 
     buildLangToggle();
-    syncThemeBtn();                                   // its label is translated too
-    toggle.textContent = sidebarNav.classList.contains("is-open") ? ui("close") : ui("menu");
+    syncThemeBtn();
+    toggle.querySelector(".menu-label").textContent =
+      overlay.classList.contains("is-open") ? ui("close") : ui("menu");
     navLabel.textContent = ui("workLabel");
 
     navDisc.innerHTML = DISC_ORDER.map(function (k, i) {
       var d = C.disciplines[k];
       if (!d) return "";
-      return '<li><a class="disc-link" href="#/' + esc(k) + '">' +
+      return '<li><a href="#/' + esc(k) + '">' +
              '<span class="disc-n">' + pad(i + 1) + "</span>" +
-             '<span class="disc-name">' + esc(t(d.label)) + "</span></a></li>";
+             "<span>" + esc(t(d.label)) + "</span></a></li>";
     }).join("");
 
     navMain.innerHTML = [
+      { href: "#/",        label: C.name },
       { href: "#/work",    label: ui("navWork") },
       { href: "#/about",   label: ui("navAbout") },
       { href: "#/gear",    label: ui("navGear") },
-      { href: "#/rates",   label: ui("navRates") },
       { href: "#/contact", label: ui("navContact") }
     ].map(function (p) {
       return '<li><a href="' + p.href + '">' + esc(p.label) + "</a></li>";
     }).join("");
 
-    navWork.innerHTML = C.work.map(function (w) {
-      return '<li><a href="#/work/' + esc(w.slug) + '">' + esc(t(w.client)) + "</a></li>";
+    navWork.innerHTML = DISC_ORDER.map(function (k) {
+      return workIn(k).map(function (w) {
+        return '<li><a href="#/work/' + esc(w.slug) + '">' + esc(t(w.client)) + "</a></li>";
+      }).join("");
     }).join("") +
     '<li><a class="nav-dm" href="#/contact">' + esc(ui("dmWork")) + "</a></li>";
 
@@ -181,50 +189,56 @@
   }
 
   function markCurrent(hash) {
-    document.querySelectorAll(".sidebar a").forEach(function (a) {
+    document.querySelectorAll(".topbar a, .overlay a").forEach(function (a) {
       a.removeAttribute("aria-current");
       if (a.getAttribute("href") === hash) a.setAttribute("aria-current", "page");
     });
   }
 
   toggle.addEventListener("click", function () {
-    var open = sidebarNav.classList.toggle("is-open");
+    var open = overlay.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.textContent = open ? ui("close") : ui("menu");
+    toggle.querySelector(".menu-label").textContent = open ? ui("close") : ui("menu");
+    document.body.style.overflow = open ? "hidden" : "";
   });
 
   /* -------------------------------------------------------------- media */
 
-  function figure(inner, caption) {
-    return "<figure>" + inner +
-      (caption ? "<figcaption>" + esc(t(caption)) + "</figcaption>" : "") + "</figure>";
+  function shot(inner, caption, n) {
+    return '<figure class="shot">' +
+      (n ? '<span class="frame-n">' + esc(n) + "</span>" : "") +
+      inner +
+      (caption ? "<figcaption>" + esc(t(caption)) + "</figcaption>" : "") +
+      "</figure>";
   }
 
-  function img(src, alt, eager) {
-    return '<div class="frame"><img src="' + esc(src) + '" alt="' + esc(t(alt) || "") + '"' +
-           (eager ? "" : ' loading="lazy"') + ' decoding="async"></div>';
+  function imgTag(src, alt, eager) {
+    return '<img src="' + esc(src) + '" alt="' + esc(t(alt) || "") + '"' +
+           (eager ? "" : ' loading="lazy"') + ' decoding="async">';
   }
 
   function renderMedia(blocks) {
-    return (blocks || []).map(function (m) {
+    var n = 0;
+    return '<div class="stack">' + (blocks || []).map(function (m) {
       switch (m.type) {
         case "image":
-          return figure(img(m.src, m.alt), m.caption);
+          n++;
+          return shot(imgTag(m.src, m.alt), m.caption, pad(n));
 
         case "images":
-          return figure('<div class="grid-2">' + (m.items || []).map(function (it) {
-            return img(it.src, it.alt);
-          }).join("") + "</div>", m.caption);
+          return '<div class="pair">' + (m.items || []).map(function (it) {
+            n++;
+            return shot(imgTag(it.src, it.alt), null, pad(n));
+          }).join("") + "</div>";
 
         case "video":
-          return figure(
-            '<video controls preload="metadata" playsinline src="' + esc(m.src) + '"' +
+          return shot('<video controls preload="metadata" playsinline src="' + esc(m.src) + '"' +
             (m.poster ? ' poster="' + esc(m.poster) + '"' : "") + "></video>", m.caption);
 
         case "embed":
-          return figure(
-            '<div class="embed"><iframe src="' + esc(m.src) + '" title="' + esc(t(m.caption) || "Video") +
-            '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" ' +
+          return shot('<div class="embed"><iframe src="' + esc(m.src) + '" title="' +
+            esc(t(m.caption) || "Video") + '" loading="lazy" ' +
+            'referrerpolicy="strict-origin-when-cross-origin" ' +
             'allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>', m.caption);
 
         case "audio":
@@ -233,27 +247,51 @@
         default:
           return "";
       }
-    }).join("");
+    }).join("") + "</div>";
   }
 
   function renderTracks(tracks) {
     return '<div class="tracks">' + tracks.map(function (tr, i) {
       return '<button class="track" data-src="' + esc(tr.src) + '" data-title="' + esc(t(tr.title)) + '">' +
              '<span class="n">' + pad(i + 1) + "</span>" +
-             "<span>" + esc(t(tr.title)) + "</span>" +
+             '<span class="t">' + esc(t(tr.title)) + "</span>" +
              '<span class="d">' + esc(tr.length || "") + "</span></button>";
     }).join("") + "</div>";
   }
 
-  function indexList(items) {
-    return '<div class="index-list">' + items.map(function (w) {
-      return '<a href="#/work/' + esc(w.slug) + '">' +
-             '<span class="c1">' + esc(t(w.client)) + "</span>" +
-             '<span class="c2">' + esc(t(w.kind) || "") + "</span>" +
-             '<span class="c3">' + esc(w.year || "") + "</span></a>";
+  /* --------------------------------------------------------------- hero */
+
+  function hero(o) {
+    var media = o.src
+      ? '<div class="hero-media">' + imgTag(o.src, o.alt, true) + "</div><div class=\"hero-scrim\"></div>"
+      : "";
+    return '<section class="hero' + (o.src ? " has-media" : "") + '">' +
+      media + MARKS +
+      '<div class="hero-body">' +
+        (o.kicker ? '<p class="kicker">' + esc(o.kicker) + "</p>" : "") +
+        '<h1 class="display">' + esc(o.title) + "</h1>" +
+        (o.sub ? '<div class="hero-sub">' + o.sub + "</div>" : "") +
+        (o.foot ? '<div class="hero-foot">' + o.foot + "</div>" : "") +
+      "</div></section>";
+  }
+
+  function sectionHead(title, count) {
+    return '<div class="section-head"><h2>' + esc(title) + "</h2>" +
+      (count != null ? '<span class="section-count">' + esc(count) + "</span>" : "") + "</div>";
+  }
+
+  function tiles(items) {
+    return '<div class="tiles">' + items.map(function (w, i) {
+      return '<a class="tile" href="#/work/' + esc(w.slug) + '">' +
+        imgTag(thumbOf(w), t(w.client)) +
+        '<span class="tile-scrim"></span>' +
+        '<span class="tile-cap">' +
+          '<span class="tile-n">' + pad(i + 1) + " / " + esc(w.year || "") + "</span>" +
+          '<span class="tile-t">' + esc(t(w.client)) + "</span>" +
+          '<span class="tile-k">' + esc(t(w.kind) || "") + "</span>" +
+        "</span></a>";
     }).join("") +
-    '<a class="dm-row" href="#/contact"><span>' + esc(ui("dmWork")) +
-      '</span><span class="dm-arrow">&rarr;</span></a>' +
+    '<a class="tile-dm" href="#/contact"><span>' + esc(ui("dmWork")) + " &rarr;</span></a>" +
     "</div>";
   }
 
@@ -261,20 +299,24 @@
 
   function viewHome() {
     var h = C.home;
-    return (h.cover ? '<div class="media' + (h.cover.mark ? " media-mark" : "") + '">' +
-                      figure(img(h.cover.src, h.cover.alt, true)) + "</div>" : "") +
-           '<h1 class="display">' + esc(t(h.headline)) + "</h1>" +
-           '<div class="lede">' + paras(h.body) + "</div>" +
-           '<div class="disc-cards">' + DISC_ORDER.map(function (k, i) {
-             var d = C.disciplines[k];
-             if (!d) return "";
-             return '<a class="disc-card" href="#/' + esc(k) + '">' +
-                    '<span class="disc-card-n">' + pad(i + 1) + "</span>" +
-                    '<span class="disc-card-t">' + esc(t(d.label)) + "</span>" +
-                    '<span class="disc-card-b">' + esc(t(d.blurb) || "") + "</span>" +
-                    '<span class="disc-card-a">&rarr;</span></a>';
-           }).join("") + "</div>" +
-           cta(h.cta);
+    return hero({
+      src: h.cover && h.cover.src, alt: h.cover && h.cover.alt,
+      kicker: t(C.tagline), title: t(h.headline),
+      sub: paras(h.body), foot: btn(h.cta)
+    }) +
+    '<section class="slab"><div class="wrap">' +
+      sectionHead(ui("navWork"), pad(C.work.length)) +
+      '<div class="disc-cards">' + DISC_ORDER.map(function (k, i) {
+        var d = C.disciplines[k];
+        if (!d) return "";
+        return '<a class="disc-card" href="#/' + esc(k) + '"><span class="disc-card-row">' +
+          '<span class="disc-card-n">' + pad(i + 1) + "</span>" +
+          '<span class="disc-card-t">' + esc(t(d.label)) + "</span>" +
+          '<span class="disc-card-b">' + esc(t(d.blurb) || "") + "</span>" +
+          '<span class="disc-card-a">&rarr;</span></span></a>';
+      }).join("") + "</div>" +
+    "</div></section>" +
+    '<section class="slab-tight"><div class="wrap">' + tiles(C.work) + "</div></section>";
   }
 
   function viewDiscipline(key) {
@@ -282,135 +324,123 @@
     if (!d) return viewMissing();
     var mine = workIn(key);
 
-    return (d.cover ? '<div class="media">' + figure(img(d.cover.src, d.cover.alt, true)) + "</div>" : "") +
-           '<h1 class="display">' + esc(t(d.headline)) + "</h1>" +
-           (d.blurb ? '<p class="meta">' + esc(t(d.blurb)) + "</p>" : "") +
-           '<div class="lede">' + paras(d.intro) + "</div>" +
-
-           '<div class="svc">' + d.services.map(function (s, i) {
-             return '<article class="svc-item">' +
-                    '<span class="svc-n">' + pad(i + 1) + "</span>" +
-                    '<div class="svc-body">' +
-                      "<h2>" + esc(t(s.title)) + "</h2>" +
-                      "<p>" + rich(t(s.body)) + "</p>" +
-                      (s.gets ? '<p class="svc-gets"><b>' + esc(ui("youGet")) + "</b> " + esc(t(s.gets)) + "</p>" : "") +
-                      (s.note ? '<p class="svc-note">' + esc(t(s.note)) + "</p>" : "") +
-                    "</div></article>";
-           }).join("") + "</div>" +
-
-           (mine.length
-             ? '<h2 class="section-label">' + esc(ui("selectedWork").replace("{x}", t(d.label))) + "</h2>" +
-               indexList(mine)
-             : "") +
-
-           cta(d.cta);
+    return hero({
+      src: d.cover && d.cover.src, alt: d.cover && d.cover.alt,
+      kicker: t(d.blurb), title: t(d.headline),
+      sub: paras(d.intro), foot: btn(d.cta)
+    }) +
+    '<section class="slab"><div class="wrap">' +
+      sectionHead(ui("services"), pad(d.services.length)) +
+      '<div class="svc">' + d.services.map(function (s, i) {
+        return '<article class="svc-item">' +
+          '<span class="svc-n">' + pad(i + 1) + "</span>" +
+          '<div class="svc-body"><h3>' + esc(t(s.title)) + "</h3>" +
+            "<p>" + rich(t(s.body)) + "</p>" +
+            (s.gets ? '<p class="svc-gets"><b>' + esc(ui("youGet")) + "</b>" + esc(t(s.gets)) + "</p>" : "") +
+            (s.note ? '<p class="svc-note">' + esc(t(s.note)) + "</p>" : "") +
+          "</div></article>";
+      }).join("") + "</div>" +
+    "</div></section>" +
+    (mine.length
+      ? '<section class="slab-tight"><div class="wrap">' +
+          sectionHead(ui("selectedWork").replace("{x}", t(d.label)), pad(mine.length)) +
+          tiles(mine) + "</div></section>"
+      : "");
   }
 
   function viewAbout() {
     var a = C.about;
-    return (a.cover ? '<div class="media">' + figure(img(a.cover.src, a.cover.alt, true)) + "</div>" : "") +
-           '<h1 class="display">' + esc(t(a.headline)) + "</h1>" +
-           '<div class="lede">' + paras(a.body) + "</div>" +
-           (a.facts && a.facts.length
-             ? '<dl class="rows">' + a.facts.map(function (f) {
-                 return '<div class="row"><dt>' + esc(t(f.k)) + "</dt><dd>" + esc(t(f.v)) + "</dd></div>";
-               }).join("") + "</dl>"
-             : "") +
-           cta(a.cta);
+    return hero({
+      src: a.cover && a.cover.src, alt: a.cover && a.cover.alt,
+      kicker: t(C.tagline), title: t(a.headline)
+    }) +
+    '<section class="slab"><div class="wrap">' +
+      '<div class="lede measure">' + paras(a.body) + "</div>" +
+    "</div></section>" +
+    '<section class="slab-tight"><div class="wrap">' +
+      (a.facts && a.facts.length
+        ? '<dl class="rows">' + a.facts.map(function (f) {
+            return '<div class="row"><dt>' + esc(t(f.k)) + "</dt><dd>" + esc(t(f.v)) + "</dd></div>";
+          }).join("") + "</dl>"
+        : "") +
+      '<p style="margin-top:2.4rem">' + btn(a.cta) + "</p>" +
+    "</div></section>";
   }
 
   function viewGear() {
     var g = C.gear;
     if (!g) return viewMissing();
-
-    return '<h1 class="display">' + esc(t(g.headline)) + "</h1>" +
-           (g.intro ? '<div class="lede"><p>' + rich(t(g.intro)) + "</p></div>" : "") +
-           g.groups.map(function (grp) {
-             return '<section class="gear-group">' +
-               '<h2 class="section-label">' + esc(t(grp.title)) + "</h2>" +
-               '<div class="gear-list">' + grp.items.map(function (it) {
-                 var inner = '<span class="gear-name">' + esc(t(it.name)) + "</span>" +
-                             '<span class="gear-note">' + esc(t(it.note) || "") + "</span>" +
-                             '<span class="gear-link">' + (it.url ? "&#8599;" : "") + "</span>";
-                 return it.url
-                   ? '<a class="gear-row" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' + inner + "</a>"
-                   : '<div class="gear-row">' + inner + "</div>";
-               }).join("") + "</div></section>";
-           }).join("") +
-           cta(g.cta);
-  }
-
-  function viewRates() {
-    var r = C.rates;
-    if (!r) return viewMissing();
-
-    return '<h1 class="display">' + esc(t(r.headline)) + "</h1>" +
-           (r.intro ? '<div class="lede"><p>' + rich(t(r.intro)) + "</p></div>" : "") +
-           r.groups.map(function (grp) {
-             return '<section class="rate-group">' +
-               '<h2 class="section-label">' + esc(t(grp.title)) + "</h2>" +
-               '<div class="rate-list">' + grp.items.map(function (it) {
-                 var p = t(it.price);
-                 // a number takes the currency; a word ("dm") stands on its own
-                 var money = /\d/.test(p) ? p + " " + (r.unit || "") : p;
-                 return '<div class="rate-row">' +
-                        '<span class="rate-name">' + esc(t(it.name)) + "</span>" +
-                        '<span class="rate-note">' + esc(t(it.note) || "") + "</span>" +
-                        '<span class="rate-price">' + esc(money) + "</span></div>";
-               }).join("") + "</div></section>";
-           }).join("") +
-           (r.note ? '<p class="rate-note-foot">' + rich(t(r.note)) + "</p>" : "") +
-           cta(r.cta);
+    return hero({ kicker: t(C.tagline), title: t(g.headline),
+                  sub: g.intro ? "<p>" + rich(t(g.intro)) + "</p>" : "" }) +
+    '<section class="slab"><div class="wrap">' +
+      g.groups.map(function (grp) {
+        return '<section class="gear-group">' +
+          sectionHead(t(grp.title), pad(grp.items.length)) +
+          '<div class="gear-list">' + grp.items.map(function (it) {
+            var inner = '<span class="gear-name">' + esc(t(it.name)) + "</span>" +
+                        '<span class="gear-note">' + esc(t(it.note) || "") + "</span>" +
+                        '<span class="gear-link">' + (it.url ? "&#8599;" : "") + "</span>";
+            return it.url
+              ? '<a class="gear-row" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer">' + inner + "</a>"
+              : '<div class="gear-row">' + inner + "</div>";
+          }).join("") + "</div></section>";
+      }).join("") +
+      "<p>" + btn(g.cta) + "</p>" +
+    "</div></section>";
   }
 
   function viewContact() {
     var c = C.contact;
-    return '<h1 class="display">' + esc(t(c.headline)) + "</h1>" +
-           '<div class="lede"><p>' + rich(t(c.intro)) + "</p></div>" +
-           '<dl class="rows">' + c.rows.map(function (r) {
-             var val = r.href
-               ? '<a class="link-plain" href="' + esc(r.href) + '">' + esc(t(r.v)) + "</a>"
-               : esc(t(r.v));
-             return '<div class="row"><dt>' + esc(t(r.k)) + "</dt><dd>" + val + "</dd></div>";
-           }).join("") + "</dl>";
+    return hero({ kicker: t(C.tagline), title: t(c.headline),
+                  sub: "<p>" + rich(t(c.intro)) + "</p>" }) +
+    '<section class="slab"><div class="wrap">' +
+      '<dl class="rows">' + c.rows.map(function (r) {
+        var val = r.href
+          ? '<a href="' + esc(r.href) + '">' + esc(t(r.v)) + "</a>"
+          : esc(t(r.v));
+        return '<div class="row"><dt>' + esc(t(r.k)) + "</dt><dd>" + val + "</dd></div>";
+      }).join("") + "</dl>" +
+    "</div></section>";
   }
 
   function viewWorkIndex() {
-    return '<h1 class="display">' + esc(ui("allWork")) + "</h1>" + DISC_ORDER.map(function (k) {
-      var d = C.disciplines[k], mine = workIn(k);
-      if (!d || !mine.length) return "";
-      return '<h2 class="section-label">' + esc(t(d.label)) + "</h2>" + indexList(mine);
-    }).join("");
+    return hero({ kicker: t(C.tagline), title: ui("allWork") }) +
+      DISC_ORDER.map(function (k) {
+        var d = C.disciplines[k], mine = workIn(k);
+        if (!d || !mine.length) return "";
+        return '<section class="slab-tight"><div class="wrap">' +
+          sectionHead(t(d.label), pad(mine.length)) + tiles(mine) + "</div></section>";
+      }).join("");
   }
 
   function viewProject(w) {
-    var meta = [w.year, t(w.role), t(w.kind)].filter(Boolean).map(esc).join(" &nbsp;·&nbsp; ");
-    return '<div class="media">' + renderMedia(w.media) + "</div>" +
-           "<h1>" + esc(t(w.title) || t(w.client)) + "</h1>" +
-           '<p class="meta">' + meta + "</p>" +
-           '<div class="lede">' + paras(w.blurb) + "</div>" +
-           '<p><a class="link-inline" href="#/contact">' + esc(ui("workWithMe")) + "</a></p>";
+    var d = C.disciplines[w.discipline];
+    var meta = [w.year, t(w.role), t(w.kind)].filter(Boolean).map(function (x) {
+      return "<span>" + esc(x) + "</span>";
+    }).join("");
+
+    return hero({
+      kicker: d ? t(d.label) : "", title: t(w.title) || t(w.client),
+      sub: '<div class="meta-row">' + meta + "</div>",
+      foot: '<a class="back" href="#/' + esc(w.discipline || "work") + '">&#8592; ' +
+            esc(d ? t(d.label) : ui("navWork")) + "</a>"
+    }) +
+    '<section class="slab-tight"><div class="wrap">' + renderMedia(w.media) + "</div></section>" +
+    '<section class="slab-tight"><div class="wrap">' +
+      '<div class="lede measure">' + paras(w.blurb) + "</div>" +
+      '<p style="margin-top:2rem">' +
+        '<a class="btn" href="#/contact">' + esc(ui("workWithMe")) +
+        '<span aria-hidden="true">&rarr;</span></a></p>' +
+    "</div></section>";
   }
 
   function viewMissing() {
-    return "<h1>" + esc(ui("notFoundTitle")) + "</h1><p>" + esc(ui("notFoundBody")) + "</p>" +
-           '<p><a class="link-inline" href="#/">' + esc(ui("backHome")) + "</a></p>";
+    return hero({ title: ui("notFoundTitle"), sub: "<p>" + esc(ui("notFoundBody")) + "</p>",
+                  foot: '<a class="btn" href="#/">' + esc(ui("backHome")) +
+                        '<span aria-hidden="true">&rarr;</span></a>' });
   }
 
   /* -------------------------------------------------------------- router */
-
-  // Every page except the landing gets one. It walks the history rather than
-  // pointing at a fixed parent, so it undoes whatever the visitor actually did
-  // — and since the boot code forces the first paint to #/, anything deeper was
-  // reached by a hash change, which means there is always a step to go back to.
-  function backBtn() {
-    return '<button class="back" type="button" id="back-btn">&#8592; ' +
-           esc(ui("back")) + "</button>";
-  }
-
-  function isHome(hash) {
-    return hash.replace(/^#\/?/, "").split("/").filter(Boolean).length === 0;
-  }
 
   function resolve(hash) {
     var parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -428,9 +458,6 @@
 
     if (parts[0] === "gear")
       return { html: viewGear(), title: ui("navGear") + suffix, slate: ui("navGear") };
-
-    if (parts[0] === "rates")
-      return { html: viewRates(), title: ui("navRates") + suffix, slate: ui("navRates") };
 
     if (parts[0] === "contact")
       return { html: viewContact(), title: ui("navContact") + suffix, slate: ui("navContact") };
@@ -450,27 +477,20 @@
   function paint(page) {
     view.innerHTML = page.html;
     document.title = page.title;
-
-    // stagger the entrance of each top-level block
     var kids = view.children;
     for (var i = 0; i < kids.length; i++) kids[i].style.setProperty("--i", i);
-
     window.scrollTo(0, 0);
-    var back = document.getElementById("back-btn");
-    if (back) back.addEventListener("click", function () { history.back(); });
     bindTracks();
     if (audio.paused && !audio.duration) bar.hidden = true;
   }
 
   var busy = false;
 
-  // slateOverride lets the language switch flash "ไทย" instead of the page name
   function route(slateOverride) {
     var hash = location.hash || "#/";
     var page = resolve(hash);
-    if (!isHome(hash)) page.html = backBtn() + page.html;
     markCurrent(hash);
-    if (sidebarNav.classList.contains("is-open")) toggle.click();
+    if (overlay.classList.contains("is-open")) toggle.click();
 
     if (REDUCED || busy) { paint(page); return; }
 
@@ -478,7 +498,6 @@
     slate.textContent = typeof slateOverride === "string" ? slateOverride : page.slate;
     wipe.classList.add("is-active", "is-covering");
 
-    // swap the content while the slats have the screen covered
     setTimeout(function () {
       paint(page);
       wipe.classList.remove("is-covering");
@@ -494,12 +513,12 @@
 
   var audio    = new Audio();
   var bar      = document.getElementById("player");
-  var btn      = document.getElementById("player-btn");
+  var playBtn  = document.getElementById("player-btn");
   var titleEl  = document.getElementById("player-title");
   var timeEl   = document.getElementById("player-time");
   var fill     = document.getElementById("player-fill");
   var barTrack = fill.parentNode;
-  var current  = null;                    // the <button class="track"> now loaded
+  var current  = null;
 
   function clock(s) {
     if (!isFinite(s)) return "0:00";
@@ -508,7 +527,7 @@
   }
 
   function repaintPlayer() {
-    btn.innerHTML = audio.paused ? "&#9658;" : "&#9612;&#9612;";
+    playBtn.innerHTML = audio.paused ? "&#9658;" : "&#9612;&#9612;";
     document.querySelectorAll(".track").forEach(function (tr) {
       tr.setAttribute("data-state", tr === current && !audio.paused ? "playing" : "idle");
     });
@@ -523,7 +542,7 @@
       fill.style.width = "0%";
     }
     bar.hidden = false;
-    audio.play().catch(function () { /* blocked or missing file — see error handler */ });
+    audio.play().catch(function () { /* blocked or missing — see error handler */ });
     repaintPlayer();
   }
 
@@ -534,7 +553,7 @@
     });
   }
 
-  btn.addEventListener("click", function () {
+  playBtn.addEventListener("click", function () {
     if (!current) return;
     if (audio.paused) audio.play().catch(function () {}); else audio.pause();
     repaintPlayer();
@@ -558,7 +577,7 @@
   audio.addEventListener("pause", repaintPlayer);
   audio.addEventListener("ended", function () { fill.style.width = "0%"; repaintPlayer(); });
   audio.addEventListener("error", function () {
-    audio.pause();                       // so the bar shows ▶ rather than a phantom pause
+    audio.pause();
     titleEl.textContent = ui("missingFile") + (audio.getAttribute("src") || "");
     timeEl.textContent = "--:--";
     fill.style.width = "0%";
@@ -567,18 +586,8 @@
 
   /* ---------------------------------------------------------------- boot */
 
-  // Always open on the home page: a stale bookmark or a hash left over from a
-  // previous visit shouldn't drop a first-time visitor deep inside the site.
-  // replaceState (not location.hash) so this never fires hashchange and never
-  // leaves the old route in history.
-  if (location.hash && location.hash !== "#/") {
-    try {
-      history.replaceState(null, "", location.pathname + location.search + "#/");
-    } catch (e) { location.replace("#/"); }        // file:// in some browsers
-  }
-
   document.documentElement.setAttribute("lang", LANG);
   buildNav();
-  window.addEventListener("hashchange", function () { route(); });   // no event arg through
+  window.addEventListener("hashchange", function () { route(); });
   route();
 })();
