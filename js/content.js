@@ -37,7 +37,8 @@ const CONTENT = {
       workWithMe: "WORK WITH ME", youGet: "you get",
       notFoundTitle: "NOT HERE", notFoundBody: "that page doesn't exist (yet).",
       backHome: "BACK TO THE START", missingFile: "missing file — add ",
-      back: "back"
+      back: "back",
+      plateTag: "PLATE 01 — LAMPANG", plateScale: "SCALE 1:1 — 16/08/2026"
     },
     th: {
       navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์",
@@ -49,15 +50,21 @@ const CONTENT = {
       workWithMe: "อยากทำงานด้วยกัน", youGet: "ได้อะไร",
       notFoundTitle: "ไม่มีหน้านี้", notFoundBody: "หน้านี้ยังไม่มี",
       backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ ",
-      back: "ย้อนกลับ"
+      back: "ย้อนกลับ",
+      plateTag: "แผ่น 01 — ลำปาง", plateScale: "อัตราส่วน 1:1 — 16/08/2026"
     }
   },
 
   /* -------------------------------------------------------------- landing */
 
   home: {
-    /* mark: true keeps the logo small so the headline and copy sit on the
-       first screen with it, instead of a full-width image pushing them down */
+    /* three frames, layered over one another on the landing plate.
+       `cover` below is the fallback if you delete the collage. */
+    collage: [
+      { src: "assets/media/photo/night/09258.jpg", alt: "Colonnade of the bridge, festoon lights receding" },
+      { src: "assets/media/photo/street/09364.jpg", alt: "Road signs on an empty street at night" },
+      { src: "assets/media/photo/night/09279.jpg", alt: "The night market, looking down the run of stalls" }
+    ],
     cover: { src: "assets/img/logo.svg", alt: "Reverie", mark: true },
     headline: "REVERIE",
     body: {
@@ -85,7 +92,6 @@ const CONTENT = {
       label:    { en: "film", th: "วิดีโอ" },
       headline: { en: "FILM", th: "วิดีโอ" },
       blurb:    { en: "moving image, start to finish", th: "ภาพเคลื่อนไหว ตั้งแต่ต้นจนจบ" },
-      cover: { src: "assets/img/film.svg", alt: "Film work" },
       intro: {
         en: [
           "i direct, shoot, cut, grade and mix. that means one person carries the idea from the first frame to the final export, and nothing gets lost in a handover.",
@@ -142,7 +148,7 @@ const CONTENT = {
       label:    { en: "photo",  th: "ภาพ" },
       headline: { en: "PHOTO",  th: "ภาพ" },
       blurb:    { en: "stills that don't look stock", th: "ภาพนิ่งที่ไม่เหมือนภาพสต็อก" },
-      cover: { src: "assets/img/photo.svg", alt: "Photo work" },
+      cover: { src: "assets/media/photo/night/09183.jpg", alt: "Sitting on the bank at night, lights broken up on the river" },
       intro: {
         en: [
           "digital and 35mm film, studio or on location. i shoot tight sets rather than huge galleries — fewer frames, all of them usable.",
@@ -184,7 +190,6 @@ const CONTENT = {
       label:    { en: "sound", th: "เสียง" },
       headline: { en: "SOUND", th: "เสียง" },
       blurb:    { en: "written, recorded, mixed", th: "แต่ง อัด มิกซ์" },
-      cover: { src: "assets/img/sound.svg", alt: "Sound work" },
       intro: {
         en: [
           "the half of the job most video people outsource. i write, produce, mix and master in-house, which is why the picture and the music actually land together.",
@@ -548,6 +553,68 @@ const CONTENT = {
         { type: "video", src: "assets/media/film/is-it-really-you-cover.mp4", caption: "1:32" }
       ]
     },
+    {
+      discipline: "photo", slug: "portrait-night",
+      client: { en: "portrait night", th: "พอร์ตเทรตกลางคืน" },
+      title:  { en: "PORTRAIT NIGHT", th: "พอร์ตเทรตกลางคืน" },
+      kind:   { en: "portrait series", th: "ชุดพอร์ตเทรต" },
+      role:   { en: "photographer", th: "ช่างภาพ" },
+      year: "2026",
+      date: "16/08/2026",
+      blurb: {
+        en: [
+          "one evening along the river in lampang — the old bridge, the walkway under it, and the festoon lights that come on at about seven.",
+          "shot wide open on the 50mm, no flash, nothing added. the light is the light that was already there: bulbs strung over the water, and whatever the market was throwing off behind us."
+        ],
+        th: [
+          "เย็นเดียวริมน้ำที่ลำปาง — สะพานเก่า ทางเดินใต้สะพาน แล้วก็ไฟสายที่ติดตอนประมาณทุ่มนึง",
+          "ถ่ายเปิดรูรับแสงสุดด้วยเลนส์ 50 ไม่ใช้แฟลช ไม่เติมอะไรเลย แสงที่เห็นคือแสงที่มีอยู่ตรงนั้น"
+        ]
+      },
+      media: [
+        { type: "image",  src: "assets/media/photo/night/09258.jpg", alt: "Standing in the colonnade, lights receding" },
+        { type: "images", items: [
+          { src: "assets/media/photo/night/09216.jpg", alt: "Under the bridge arch" },
+          { src: "assets/media/photo/night/09222.jpg", alt: "Turning back toward the camera" }
+        ] },
+        { type: "images", items: [
+          { src: "assets/media/photo/night/09273.jpg", alt: "" },
+          { src: "assets/media/photo/night/09207.jpg", alt: "" }
+        ] },
+        { type: "image",  src: "assets/media/photo/night/09246.jpg", alt: "Light streaks across the frame" },
+        { type: "image",  src: "assets/media/photo/night/09183.jpg", alt: "Sitting on the bank, reflections on the river" }
+      ]
+    },
+
+    {
+      discipline: "photo", slug: "night-streets",
+      client: { en: "night streets", th: "ถนนกลางคืน" },
+      title:  { en: "NIGHT STREETS", th: "ถนนกลางคืน" },
+      kind:   { en: "street series", th: "ชุดภาพถนน" },
+      role:   { en: "photographer", th: "ช่างภาพ" },
+      year: "2026",
+      date: "18/08/2026",
+      blurb: {
+        en: [
+          "the same town after midnight, when there is nobody left in it. iso 51200, hand held, grain everywhere — which is the point.",
+          "signs, shutters, a cart going home. the town keeps its shape after the people go."
+        ],
+        th: [
+          "เมืองเดิมหลังเที่ยงคืน ตอนที่ไม่เหลือใครแล้ว iso 51200 ถือมือ เกรนเต็มไปหมด ซึ่งนั่นแหละคือสิ่งที่อยากได้",
+          "ป้าย ประตูม้วน รถเข็นที่กำลังกลับบ้าน เมืองยังคงรูปของมันอยู่หลังคนกลับหมดแล้ว"
+        ]
+      },
+      media: [
+        { type: "image",  src: "assets/media/photo/street/09359.jpg", alt: "A cart crossing under the traffic light" },
+        { type: "images", items: [
+          { src: "assets/media/photo/street/09364.jpg", alt: "Road signs, Thanon Hiway and Wat Shichum" },
+          { src: "assets/media/photo/street/09369.jpg", alt: "A bulb under the eaves of a shophouse" }
+        ] },
+        { type: "image",  src: "assets/media/photo/street/09370.jpg", alt: "Two street lamps" },
+        { type: "image",  src: "assets/media/photo/street/09318.jpg", alt: "Light broken up on the surface of the water" }
+      ]
+    },
+
     {
       /* TODO rename this — i called it "fishing days" from what's in the frames.
          Cut any image you don't want: delete its { src, alt } line. */

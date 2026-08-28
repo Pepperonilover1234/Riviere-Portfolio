@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+<!-- KEY COLOUR: blue by default. Change to data-key="red" and the whole
+     site — sidebar, title bars, duotone plates, hovers — turns red. -->
+<html lang="en" data-key="blue">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,6 +24,14 @@
 </script>
 </head>
 <body>
+
+<!-- the printed-sheet layers: drawing grid and crop marks.
+     Both decorative, pointer-events:none, behind the document. -->
+<div class="blueprint" aria-hidden="true"></div>
+<div class="crops" aria-hidden="true">
+  <span class="crop tl"></span><span class="crop tr"></span>
+  <span class="crop bl"></span><span class="crop br"></span>
+</div>
 
 <a class="skip-link" href="#main">skip to content</a>
 
@@ -69,6 +79,21 @@
       <p class="nav-label" id="nav-work-label">work</p>
       <ul id="nav-work"></ul>
     </nav>
+
+
+    <div class="globe-plate" aria-hidden="true">
+      <svg class="globe" viewBox="0 0 120 120" role="presentation" focusable="false">
+        <circle class="g-rim"  cx="60" cy="60" r="46"/>
+        <ellipse class="g-line" cx="60" cy="60" rx="46" ry="15"/>
+        <ellipse class="g-line" cx="60" cy="60" rx="46" ry="31"/>
+        <ellipse class="g-line" cx="60" cy="60" rx="15" ry="46"/>
+        <ellipse class="g-line" cx="60" cy="60" rx="31" ry="46"/>
+        <line class="g-line" x1="14" y1="60" x2="106" y2="60"/>
+        <line class="g-line" x1="60" y1="14" x2="60" y2="106"/>
+        <circle class="g-dot" cx="74" cy="52" r="2.6"/>
+      </svg>
+      <p class="globe-cap"><span>18.29 N</span><span>99.49 E</span></p>
+    </div>
 
     <footer class="sidebar-foot">
       <p data-bind="location">—</p>
