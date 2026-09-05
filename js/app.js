@@ -136,30 +136,6 @@
     return C.work.filter(function (w) { return w.discipline === discipline; });
   }
 
-  // Every page is a sheet in the same drawing set: a heavy title, a code
-  // in the top right, a rule under both.
-  function sheetHead(text, code, big) {
-    return '<div class="sheet-head">' +
-             "<h1" + (big ? ' class="display"' : "") + ">" + esc(text) + "</h1>" +
-             '<span class="sheet-code">' + esc(code) + "</span>" +
-           "</div>";
-  }
-
-  // Image fragments layered over one another, with the geometry laid on top.
-  function collage(items) {
-    var slot = ["a", "b", "c"];
-    return '<div class="plate-collage">' +
-             '<span class="plate-tag tl">' + esc(ui("plateTag")) + "</span>" +
-             items.slice(0, 3).map(function (m, i) {
-               return '<span class="frag ' + slot[i] + '"><img src="' + esc(m.src) +
-                      '" alt="' + esc(t(m.alt) || "") + '" decoding="async"></span>';
-             }).join("") +
-             '<span class="blk one"></span><span class="blk two"></span>' +
-             '<span class="dial"></span>' +
-             '<span class="plate-tag br">' + esc(ui("plateScale")) + "</span>" +
-           "</div>";
-  }
-
   function cta(c) {
     return c ? '<p><a class="link-inline" href="' + esc(c.href) + '">' +
                esc(t(c.label)) + "</a></p>" : "";
@@ -285,9 +261,9 @@
 
   function viewHome() {
     var h = C.home;
-    return (h.collage && h.collage.length ? collage(h.collage)
-             : h.cover ? '<div class="media">' + figure(img(h.cover.src, h.cover.alt, true)) + "</div>" : "") +
-           sheetHead(t(h.headline), "SHT 00 — INDEX", true) +
+    return (h.cover ? '<div class="media' + (h.cover.mark ? " media-mark" : "") + '">' +
+                      figure(img(h.cover.src, h.cover.alt, true)) + "</div>" : "") +
+           '<h1 class="display">' + esc(t(h.headline)) + "</h1>" +
            '<div class="lede">' + paras(h.body) + "</div>" +
            '<div class="disc-cards">' + DISC_ORDER.map(function (k, i) {
              var d = C.disciplines[k];
@@ -306,8 +282,8 @@
     if (!d) return viewMissing();
     var mine = workIn(key);
 
-    return (d.cover ? '<div class="media media-cover">' + figure(img(d.cover.src, d.cover.alt, true)) + "</div>" : "") +
-           sheetHead(t(d.headline), "SHT " + pad(DISC_ORDER.indexOf(key) + 1) + " — " + String(key).toUpperCase(), true) +
+    return (d.cover ? '<div class="media">' + figure(img(d.cover.src, d.cover.alt, true)) + "</div>" : "") +
+           '<h1 class="display">' + esc(t(d.headline)) + "</h1>" +
            (d.blurb ? '<p class="meta">' + esc(t(d.blurb)) + "</p>" : "") +
            '<div class="lede">' + paras(d.intro) + "</div>" +
 
@@ -332,8 +308,8 @@
 
   function viewAbout() {
     var a = C.about;
-    return (a.cover ? '<div class="media media-cover">' + figure(img(a.cover.src, a.cover.alt, true)) + "</div>" : "") +
-           sheetHead(t(a.headline), "SHT 05 — BIO", true) +
+    return (a.cover ? '<div class="media">' + figure(img(a.cover.src, a.cover.alt, true)) + "</div>" : "") +
+           '<h1 class="display">' + esc(t(a.headline)) + "</h1>" +
            '<div class="lede">' + paras(a.body) + "</div>" +
            (a.facts && a.facts.length
              ? '<dl class="rows">' + a.facts.map(function (f) {
@@ -347,7 +323,7 @@
     var g = C.gear;
     if (!g) return viewMissing();
 
-    return sheetHead(t(g.headline), "SHT 06 — KIT", true) +
+    return '<h1 class="display">' + esc(t(g.headline)) + "</h1>" +
            (g.intro ? '<div class="lede"><p>' + rich(t(g.intro)) + "</p></div>" : "") +
            g.groups.map(function (grp) {
              return '<section class="gear-group">' +
@@ -368,7 +344,7 @@
     var r = C.rates;
     if (!r) return viewMissing();
 
-    return sheetHead(t(r.headline), "SHT 07 — RATE", true) +
+    return '<h1 class="display">' + esc(t(r.headline)) + "</h1>" +
            (r.intro ? '<div class="lede"><p>' + rich(t(r.intro)) + "</p></div>" : "") +
            r.groups.map(function (grp) {
              return '<section class="rate-group">' +
@@ -389,7 +365,7 @@
 
   function viewContact() {
     var c = C.contact;
-    return sheetHead(t(c.headline), "SHT 08 — CONTACT", true) +
+    return '<h1 class="display">' + esc(t(c.headline)) + "</h1>" +
            '<div class="lede"><p>' + rich(t(c.intro)) + "</p></div>" +
            '<dl class="rows">' + c.rows.map(function (r) {
              var val = r.href
@@ -400,7 +376,7 @@
   }
 
   function viewWorkIndex() {
-    return sheetHead(ui("allWork"), "SHT 04 — INDEX", true) + DISC_ORDER.map(function (k) {
+    return '<h1 class="display">' + esc(ui("allWork")) + "</h1>" + DISC_ORDER.map(function (k) {
       var d = C.disciplines[k], mine = workIn(k);
       if (!d || !mine.length) return "";
       return '<h2 class="section-label">' + esc(t(d.label)) + "</h2>" + indexList(mine);
@@ -410,8 +386,7 @@
   function viewProject(w) {
     var meta = [w.date || w.year, t(w.role), t(w.kind)].filter(Boolean).map(esc).join(" &nbsp;·&nbsp; ");
     return '<div class="media">' + renderMedia(w.media) + "</div>" +
-           sheetHead(t(w.title) || t(w.client),
-                     "PLATE " + String(w.slug || "").toUpperCase().replace(/-/g, " "), false) +
+           "<h1>" + esc(t(w.title) || t(w.client)) + "</h1>" +
            '<p class="meta">' + meta + "</p>" +
            '<div class="lede">' + paras(w.blurb) + "</div>" +
            '<p><a class="link-inline" href="#/contact">' + esc(ui("workWithMe")) + "</a></p>";
