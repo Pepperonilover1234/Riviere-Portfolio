@@ -37,8 +37,7 @@ const CONTENT = {
       workWithMe: "WORK WITH ME", youGet: "you get",
       notFoundTitle: "NOT HERE", notFoundBody: "that page doesn't exist (yet).",
       backHome: "BACK TO THE START", missingFile: "missing file — add ",
-      back: "back",
-      plateTag: "PLATE 01 — LAMPANG", plateScale: "SCALE 1:1 — 16/08/2026"
+      back: "back"
     },
     th: {
       navWork: "งานทั้งหมด", navAbout: "เกี่ยวกับ", navGear: "อุปกรณ์",
@@ -50,21 +49,16 @@ const CONTENT = {
       workWithMe: "อยากทำงานด้วยกัน", youGet: "ได้อะไร",
       notFoundTitle: "ไม่มีหน้านี้", notFoundBody: "หน้านี้ยังไม่มี",
       backHome: "กลับหน้าแรก", missingFile: "ไม่เจอไฟล์ — ใส่ ",
-      back: "ย้อนกลับ",
-      plateTag: "แผ่น 01 — ลำปาง", plateScale: "อัตราส่วน 1:1 — 16/08/2026"
+      back: "ย้อนกลับ"
     }
   },
 
   /* -------------------------------------------------------------- landing */
 
   home: {
-    /* three frames, layered over one another on the landing plate.
-       `cover` below is the fallback if you delete the collage. */
-    collage: [
-      { src: "assets/media/photo/night/09258.jpg", alt: "Colonnade of the bridge, festoon lights receding" },
-      { src: "assets/media/photo/street/09364.jpg", alt: "Road signs on an empty street at night" },
-      { src: "assets/media/photo/night/09279.jpg", alt: "The night market, looking down the run of stalls" }
-    ],
+    /* the landing image. `mark: true` holds it small — it's a logo, not a
+       photograph, so it shouldn't take the whole column. Drop the flag and
+       point `src` at a photo to run one full-width instead. */
     cover: { src: "assets/img/logo.svg", alt: "Reverie", mark: true },
     headline: "REVERIE",
     body: {

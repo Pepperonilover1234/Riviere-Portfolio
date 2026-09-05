@@ -69,6 +69,7 @@ any text editor, change the words, save, refresh the browser. Anything marked
 | Email, socials, phone | `contact.rows` |
 | Bio + the facts table | `about` |
 | Kit list | `gear` |
+| Price list | `rates` |
 | Every project | `work` array |
 
 ### Adding or changing a service
@@ -203,14 +204,31 @@ nothing needs to be enormous. Put anything longer than about a minute of video
 on YouTube or Vimeo and use an `embed` block — a self-hosted mp4 downloads in
 full before it plays.
 
-The `.svg` files in `assets/img/` are the placeholders currently showing on every
-page. Delete that folder once your own work is in.
+`assets/img/logo.svg` is the reverie K — the landing mark, the favicon, and the
+stand-in artwork on the sound release. It's a flat black glyph on a transparent
+ground; the stylesheet inverts it on the dark theme so it stays legible without
+a second file. The other `.svg` files in that folder are leftover placeholders
+from an earlier draft, no longer referenced by anything — delete them whenever
+you like.
 
 ## Look and feel
 
+Black and white on sketchbook paper. The light background is a warm off-white
+(`#f1efe9`) rather than `#fff`, which is what stops the page glaring; the dark
+theme is that same paper turned right down, warm rather than a blue-black.
+Nothing else carries colour — the photographs are the only saturated thing on
+the site, which is the point of a portfolio.
+
 All colours, type size, sidebar width and column width are the tokens at the top
-of [`css/style.css`](css/style.css). Change `--accent` for the hover and slate
-colour, `--measure` for how wide the content column runs.
+of [`css/style.css`](css/style.css). `--measure` sets how wide the content
+column runs. `--accent` is what a link or a row goes to when you point at it —
+it's the ink, because the site is monochrome, but it's still a token of its own:
+put a colour there and every hover on the site picks it up without touching
+anything else.
+
+Deliberately absent: cards, shadows, rounded corners, screens, grain, and any
+block of flat colour. Rules are a single hairline. The sidebar sits on the same
+paper as the page rather than in a field of its own.
 
 ### Light and dark
 
@@ -261,9 +279,10 @@ rewrite them.
 > `poster` still while you're there, or the player shows a black rectangle until
 > it buffers.
 
-**Still placeholder:** the other three `work` entries — school event, live
-session, music production. Real categories, invented write-ups, pointing at the
-grey `assets/img` stand-ins. Also the three sound services below `mixing`.
+**Still placeholder:** the artwork on `somewhere between` is the K mark standing
+in for a real cover, and the two mp3s it lists aren't in the repo yet — drop
+them in at `assets/media/sound/` or the player will report them missing. Also
+the three sound services below `mixing`.
 
 Projects are fully bilingual — title, sidebar label, role, blurb and captions
 all switch with the language. Add new ones the same way.
