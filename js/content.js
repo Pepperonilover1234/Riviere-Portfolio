@@ -524,29 +524,12 @@ const CONTENT = {
         { type: "embed", src: "https://www.youtube.com/embed/VjtrD92pC9s", caption: "1:19" }
       ]
     },
-    /* "sports day" removed — it was an invented write-up on placeholder images.
-       School events are still offered on the film page as a service; the
-       "more — dm for details" row at the bottom of every work list covers it
-       until there's a real one to show. */
-    {
-      /* TODO — is this your own track or a cover? and who played on it?
-         i've kept the write-up deliberately vague because i don't know. */
-      discipline: "film", slug: "is-it-really-you",
-      client: { en: "is it really you — live", th: "is it really you — live" },
-      title:  { en: "IS IT REALLY YOU — LIVE SESSION", th: "IS IT REALLY YOU — ไลฟ์เซสชัน" },
-      year: "2026",
-      role:  { en: "dp / recording / mix", th: "ถ่าย / อัดเสียง / มิกซ์" },
-      kind:  { en: "live session", th: "ไลฟ์เซสชัน" },
-      blurb: {
-        en: ["one song, played live and cut to a proper audio mix rather than the on-camera sound."],
-        th: ["หนึ่งเพลง เล่นสด ตัดเข้ากับเสียงที่มิกซ์จริง ไม่ใช่เสียงจากไมค์กล้อง"]
-      },
-      media: [
-        /* 1:33, 1920x1080, 11 Mbps, 121 MB — a far saner export than the vlog,
-           though still worth getting down to ~8 Mbps before publishing. */
-        { type: "video", src: "assets/media/film/is-it-really-you-cover.mp4", caption: "1:32" }
-      ]
-    },
+    /* "sports day" and "is it really you — live" both removed: the first was
+       an invented write-up on placeholder images, the second pointed at an mp4
+       that was never in the repo, so it rendered a dead player. Live sessions
+       and school events are still offered on the film page as services, and
+       the "more — dm for details" row at the bottom of every work list covers
+       them until there is real work to show. */
     {
       discipline: "photo", slug: "portrait-night",
       client: { en: "portrait night", th: "พอร์ตเทรตกลางคืน" },
