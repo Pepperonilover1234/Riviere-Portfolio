@@ -515,13 +515,13 @@ const CONTENT = {
         th: ["ถ่ายคนเดียวแล้วตัดระหว่างทาง กล้องตัวเดียว ใช้แสงที่มี ไม่มีเทคสอง"]
       },
       media: [
-        /* Self-hosted. Currently 1:19 and 465 MB, which is still 49.6 Mbps —
-           a mastering bitrate, roughly 6x what web delivery needs.
-           BEFORE THE SITE GOES LIVE: re-export at ~8 Mbps 1080p h.264 (lands
-           near 80 MB) and save it over this exact filename — nothing here needs
-           to change. A `poster` frame is worth adding too, otherwise the player
-           shows a black rectangle until enough of the file has buffered. */
-        { type: "video", src: "assets/media/film/roam-travel-vlog.mp4", caption: "1:19" }
+        /* On YouTube rather than self-hosted. The 465 MB master never went into
+           the repo — assets/media/film/*.mp4 is gitignored, because GitHub
+           rejects anything over 100 MB — so this page was showing a dead player
+           on the live site. An embed also avoids the real problem with a
+           self-hosted mp4: it downloads in full before it plays.
+           Embeds need the /embed/ url, not the youtu.be share link. */
+        { type: "embed", src: "https://www.youtube.com/embed/VjtrD92pC9s", caption: "1:19" }
       ]
     },
     /* "sports day" removed — it was an invented write-up on placeholder images.
@@ -663,6 +663,29 @@ const CONTENT = {
           { src: "assets/media/photo/dsc08678.jpg", alt: "" }
         ] },
         { type: "image",  src: "assets/media/photo/dsc08695.jpg", alt: "" }
+      ]
+    },
+    {
+      /* TODO — the blurb is only what's visible in the frames, because you
+         haven't told me what the day was. Rewrite it, and add the rest of the
+         take if you have it: copy an { type: "image", ... } line per frame. */
+      discipline: "photo", slug: "festival",
+      client: { en: "festival",  th: "เทศกาล" },
+      title:  { en: "FESTIVAL",  th: "เทศกาล" },
+      year: "2026",
+      role:  { en: "photographer", th: "ช่างภาพ" },
+      kind:  { en: "event", th: "งานอีเวนต์" },
+      blurb: {
+        en: ["kayaks on the river, club jerseys, and a line of pennants over the water."],
+        th: ["เรือคายัคบนแม่น้ำ เสื้อทีม กับธงราวเหนือผิวน้ำ"]
+      },
+      /* one portrait, one wide — kept as separate full-width blocks rather than
+         a 2-up, because mixing orientations leaves one side of the row short */
+      media: [
+        { type: "image", src: "assets/media/photo/festival/festival-01.jpg",
+          alt: "Two paddlers in club jerseys rafted alongside kayaks, pennants strung overhead" },
+        { type: "image", src: "assets/media/photo/festival/festival-02.jpg",
+          alt: "A paddler underway, seen from behind" }
       ]
     },
     {
