@@ -666,6 +666,29 @@ const CONTENT = {
       ]
     },
     {
+      /* TODO — the blurb is only what's visible in the frames, because you
+         haven't told me what the day was. Rewrite it, and add the rest of the
+         take if you have it: copy an { type: "image", ... } line per frame. */
+      discipline: "photo", slug: "festival",
+      client: { en: "festival",  th: "เทศกาล" },
+      title:  { en: "FESTIVAL",  th: "เทศกาล" },
+      year: "2026",
+      role:  { en: "photographer", th: "ช่างภาพ" },
+      kind:  { en: "event", th: "งานอีเวนต์" },
+      blurb: {
+        en: ["kayaks on the river, club jerseys, and a line of pennants over the water."],
+        th: ["เรือคายัคบนแม่น้ำ เสื้อทีม กับธงราวเหนือผิวน้ำ"]
+      },
+      /* one portrait, one wide — kept as separate full-width blocks rather than
+         a 2-up, because mixing orientations leaves one side of the row short */
+      media: [
+        { type: "image", src: "assets/media/photo/festival/festival-01.jpg",
+          alt: "Two paddlers in club jerseys rafted alongside kayaks, pennants strung overhead" },
+        { type: "image", src: "assets/media/photo/festival/festival-02.jpg",
+          alt: "A paddler underway, seen from behind" }
+      ]
+    },
+    {
       /* The two mp3s below do not exist yet — drop the real files in at these
          paths (or change the paths) or the player will report them missing.
          Track lengths are omitted on purpose; add `length: "3:41"` to a track
