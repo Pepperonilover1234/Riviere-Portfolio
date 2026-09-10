@@ -515,13 +515,13 @@ const CONTENT = {
         th: ["ถ่ายคนเดียวแล้วตัดระหว่างทาง กล้องตัวเดียว ใช้แสงที่มี ไม่มีเทคสอง"]
       },
       media: [
-        /* Self-hosted. Currently 1:19 and 465 MB, which is still 49.6 Mbps —
-           a mastering bitrate, roughly 6x what web delivery needs.
-           BEFORE THE SITE GOES LIVE: re-export at ~8 Mbps 1080p h.264 (lands
-           near 80 MB) and save it over this exact filename — nothing here needs
-           to change. A `poster` frame is worth adding too, otherwise the player
-           shows a black rectangle until enough of the file has buffered. */
-        { type: "video", src: "assets/media/film/roam-travel-vlog.mp4", caption: "1:19" }
+        /* On YouTube rather than self-hosted. The 465 MB master never went into
+           the repo — assets/media/film/*.mp4 is gitignored, because GitHub
+           rejects anything over 100 MB — so this page was showing a dead player
+           on the live site. An embed also avoids the real problem with a
+           self-hosted mp4: it downloads in full before it plays.
+           Embeds need the /embed/ url, not the youtu.be share link. */
+        { type: "embed", src: "https://www.youtube.com/embed/VjtrD92pC9s", caption: "1:19" }
       ]
     },
     /* "sports day" removed — it was an invented write-up on placeholder images.
