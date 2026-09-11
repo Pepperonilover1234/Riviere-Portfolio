@@ -265,24 +265,25 @@ Pages, or upload by FTP to any host. Nothing needs Node or a database.
 **Real:** the studio name, the about page, every contact detail, the whole gear
 list, and the service lists on the film and photo pages.
 
-**Real work:** `travel vlog` — your own 6m02s film, self-hosted. And
-`fishing days` — 18 of your own frames, though the images are the JPEG previews
-pulled out of your `.ARW` files, so they're Sony's in-camera rendering rather
-than your grade. Save your Lightroom exports over them using the same filenames
-and nothing else needs changing. Titles and blurbs on both are still mine —
-rewrite them.
+**Real work:** every project on the site is yours. `travel vlog` plays from
+YouTube. `portrait night`, `night streets` and `festival` are your own frames.
+So is `fishing days`, though those images are the JPEG previews pulled out of
+the `.ARW` files rather than your own grade, so they are Sony's in-camera
+rendering — save Lightroom exports over them using the same filenames and
+nothing else needs changing.
 
-> **Before publishing:** `assets/media/film/roam-travel-vlog.mp4` is a **2.07 GB
-> master at 49 Mbps.** Self-hosted video downloads in full before it plays, so
-> as it stands every visitor pulls 2 GB. Export ~8 Mbps 1080p h.264 from Resolve
-> (~360 MB) and save it over that exact filename — no code changes needed. Add a
-> `poster` still while you're there, or the player shows a black rectangle until
-> it buffers.
+**Nothing is self-hosted any more.** There are no `video` blocks and no `audio`
+blocks left in `content.js`, so `assets/media/film/` and `assets/media/sound/`
+are unused. That is deliberate: both are gitignored, because GitHub rejects
+files over 100 MB and a self-hosted mp4 downloads in full before it plays.
+Put long video on YouTube or Vimeo and use an `embed` block.
 
-**Still placeholder:** the artwork on `somewhere between` is the K mark standing
-in for a real cover, and the two mp3s it lists aren't in the repo yet — drop
-them in at `assets/media/sound/` or the player will report them missing. Also
-the three sound services below `mixing`.
+The audio player is still wired up in `app.js` and the stylesheet, dormant
+until the first `audio` block appears. The sound page still sells the services.
+
+**Still placeholder:** the `festival` blurb describes only what is visible in
+the frames and is marked `// TODO` — what the day actually was hasn't been
+written up. Also the three sound services below `mixing`.
 
 Projects are fully bilingual — title, sidebar label, role, blurb and captions
 all switch with the language. Add new ones the same way.

@@ -510,10 +510,6 @@ const CONTENT = {
       year: "2026",
       role:  { en: "camera op / edit", th: "ถ่าย / ตัดต่อ" },
       kind:  { en: "vlog", th: "vlog" },
-      blurb: {
-        en: ["shot solo and cut on the road — one camera, available light, no second takes."],
-        th: ["ถ่ายคนเดียวแล้วตัดระหว่างทาง กล้องตัวเดียว ใช้แสงที่มี ไม่มีเทคสอง"]
-      },
       media: [
         /* On YouTube rather than self-hosted. The 465 MB master never went into
            the repo — assets/media/film/*.mp4 is gitignored, because GitHub
@@ -669,30 +665,6 @@ const CONTENT = {
           alt: "Two paddlers in club jerseys rafted alongside kayaks, pennants strung overhead" },
         { type: "image", src: "assets/media/photo/festival/festival-02.jpg",
           alt: "A paddler underway, seen from behind" }
-      ]
-    },
-    {
-      /* The two mp3s below do not exist yet — drop the real files in at these
-         paths (or change the paths) or the player will report them missing.
-         Track lengths are omitted on purpose; add `length: "3:41"` to a track
-         once you know it and it shows on the right of the row. */
-      discipline: "sound", slug: "somewhere-between",
-      client: { en: "somewhere between", th: "somewhere between" },
-      title:  { en: "SOMEWHERE BETWEEN", th: "SOMEWHERE BETWEEN" },
-      year: "2026",
-      role:  { en: "production / mix / master", th: "โปรดิวซ์ / มิกซ์ / มาสเตอร์" },
-      kind:  { en: "singles", th: "ซิงเกิล" },
-      blurb: {
-        en: ["two singles — <b>interlude</b> and <b>CDXVII</b> — written, produced, mixed and mastered in-house."],
-        th: ["สองซิงเกิล — <b>interlude</b> และ <b>CDXVII</b> — แต่ง โปรดิวซ์ มิกซ์ และมาสเตอร์เองทั้งหมด"]
-      },
-      media: [
-        { type: "audio", tracks: [
-          { title: "interlude", src: "assets/media/sound/interlude.mp3" },
-          { title: "CDXVII",    src: "assets/media/sound/cdxvii.mp3" }
-        ] },
-        { type: "image", src: "assets/img/logo.svg", alt: "Artwork",
-          caption: { en: "artwork", th: "ปกเพลง" } }
       ]
     }
   ]

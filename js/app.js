@@ -388,7 +388,7 @@
     return '<div class="media">' + renderMedia(w.media) + "</div>" +
            "<h1>" + esc(t(w.title) || t(w.client)) + "</h1>" +
            '<p class="meta">' + meta + "</p>" +
-           '<div class="lede">' + paras(w.blurb) + "</div>" +
+           (w.blurb ? '<div class="lede">' + paras(w.blurb) + "</div>" : "") +
            '<p><a class="link-inline" href="#/contact">' + esc(ui("workWithMe")) + "</a></p>";
   }
 
