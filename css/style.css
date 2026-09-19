@@ -756,7 +756,11 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
   .index-list a { grid-template-columns: minmax(0, 1fr) 56px; }
   .index-list .c2 { display: none; }
   .disc-card { grid-template-columns: 22px minmax(0, 1fr) 16px; }
-  .disc-card-b { grid-column: 2 / -1; }
+  /* the blurb drops to its own line; the arrow has to be pinned to the top
+     row explicitly or auto-placement strands it on a third line, at the far
+     left, where it reads as a stray mark rather than as "go" */
+  .disc-card-b { grid-column: 2 / -1; grid-row: 2; }
+  .disc-card-a { grid-column: 3; grid-row: 1; }
   .gear-row { grid-template-columns: minmax(0, 1fr) 14px; gap: 0 12px; }
   .gear-note { grid-column: 1; }
   .gear-link { grid-row: 1; grid-column: 2; opacity: 1; transform: none; }
@@ -765,6 +769,59 @@ a.gear-row:hover .gear-link { opacity: 1; transform: none; color: var(--accent);
   .rate-note { grid-column: 1; grid-row: 2; }
   .rate-price { grid-column: 2; grid-row: 1; }
   .wipe-slate { font-size: 11px; letter-spacing: 0.5em; text-indent: 0.5em; }
+}
+
+/* ------------------------------------------------------------------ touch */
+/* Every interactive cue above is written as a :hover state — the wash behind a
+   discipline row, the arrow that slides in from the left, the nudge to the
+   right. A phone has no hover, so on a touch device not one of them ever
+   fires and every row renders as flat, inert text. That is why the site read
+   as unclickable on a phone while looking fine on a desktop.
+
+   Nothing new is invented here. The arrows already exist in the markup, so
+   touch simply stops hiding them, and :active stands in for :hover so a tap
+   has feedback. Targets go to the 44px floor while we're here — 9px of
+   padding on an index row is not a thumb-sized target. */
+
+@media (hover: none) {
+  /* the affordances hover was keeping to itself */
+  .disc-card-a,
+  .gear-link,
+  .dm-arrow { opacity: 1; transform: none; }
+
+  /* a tap is the only "hover" a phone has, so give it the same wash */
+  .disc-card:active::before { transform: scaleX(1); }
+  .disc-card:active,
+  .disc-card:active .disc-card-t,
+  .disc-card:active .disc-card-n,
+  .index-list a:active,
+  a.gear-row:active,
+  a.gear-row:active .gear-name,
+  .track:active,
+  .sidebar li a:active,
+  .link-inline:active,
+  .link-plain:active { color: var(--accent); }
+
+  /* rows tint on press — the shade wash, not a colour */
+  .index-list a:active,
+  a.gear-row:active,
+  .track:active { background: var(--shade); }
+
+  /* thumb-sized targets */
+  .disc-card    { padding-top: 16px; padding-bottom: 16px; }
+  .index-list a { padding-top: 13px; padding-bottom: 13px; }
+  .gear-row,
+  .rate-row     { padding-top: 13px; padding-bottom: 13px; }
+  .track        { padding-top: 13px; padding-bottom: 13px; }
+  .sidebar li a { padding-top: 12px; padding-bottom: 12px; }
+
+  /* the sidebar's hover marker is dead weight on touch; show it on the
+     current page only, where it means something */
+  .sidebar li a::before { display: none; }
+  .sidebar li a[aria-current]::before { display: block; opacity: 1; transform: none; }
+
+  /* the browser's own grey flash fights the wash above */
+  a, button { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (prefers-reduced-motion: reduce) {

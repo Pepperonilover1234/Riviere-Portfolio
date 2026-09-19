@@ -185,6 +185,19 @@ Smaller motion elsewhere: content blocks rise in sequence on each page, images
 unveil top-to-bottom behind a clip, images scale slightly on hover, and list
 rows nudge right when you point at them.
 
+### Touch
+
+All of the above is written as `:hover`, and a phone has no hover — so on a
+touch device none of it fires and every row renders as flat, inert text. A
+`@media (hover: none)` block near the bottom of the stylesheet gives touch the
+same affordances: the `→` and `↗` arrows, which hover keeps hidden until you
+point at a row, are shown permanently; `:active` stands in for `:hover` so a
+tap tints the row; and tap targets go to the 44px floor. Desktop is untouched —
+the arrows still stay hidden there until you point at something.
+
+Worth remembering if you add a new row type: give it an `:active` state as well
+as a `:hover` one, or it will feel dead on a phone.
+
 ## Your files
 
 Your work goes in **[`assets/media/`](assets/media/)** — three folders, `film`,
