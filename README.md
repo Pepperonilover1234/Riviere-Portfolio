@@ -1,12 +1,12 @@
 # reverie
 
-Portfolio site for Reverie — a studio doing film, photo and sound.
+Portfolio site for Reverie — a studio doing film and photo.
 
 Stripped-back editorial layout: fixed left sidebar, a single narrow column of
 media on the right, monospace type, no cards, no shadows. Four page types:
 
 - **landing** — cover image, intro, and the three disciplines
-- **film / photo / sound** — one page each, with a numbered service list and
+- **film / photo** — one page each, with a numbered service list and
   the work from that discipline
 - **project pages** — one per entry in `work`
 - **about**, **contact**, **all work**
@@ -27,7 +27,7 @@ plays the slate transition with the new language on it.
 Any text a visitor reads is written as a **pair**:
 
 ```js
-tagline: { en: "film · photo · sound", th: "วิดีโอ · ภาพ · เสียง" }
+tagline: { en: "film · photo", th: "วิดีโอ · ภาพ" }
 ```
 
 A **plain string with no pair shows in both languages** — which is what you want
@@ -65,7 +65,6 @@ any text editor, change the words, save, refresh the browser. Anything marked
 | Landing page image + intro | `home` |
 | The film page | `disciplines.film` |
 | The photo page | `disciplines.photo` |
-| The sound page | `disciplines.sound` |
 | Email, socials, phone | `contact.rows` |
 | Bio + the facts table | `about` |
 | Kit list | `gear` |
@@ -87,8 +86,7 @@ words — the numbering (01, 02, 03…) is automatic.
 ```
 
 The photo page has only the two services you named so far; there's a marked slot
-in `content.js` to drop more in. The sound page beyond `mixing` is my guess at
-your wording — rewrite or delete those three.
+in `content.js` to drop more in.
 
 ### The about page
 
@@ -126,7 +124,7 @@ for anything you want to be precise about.
 ### Adding a project
 
 Copy any block in `work`. **`discipline` decides which page it appears on** —
-`"film"`, `"photo"` or `"sound"`. `client` is the sidebar label, `slug` is the
+`"film"` or `"photo"`. `client` is the sidebar label, `slug` is the
 url (`#/work/your-slug`).
 
 ```js
@@ -202,7 +200,7 @@ as a `:hover` one, or it will feel dead on a phone.
 
 Your work goes in **[`assets/media/`](assets/media/)** — three folders, `film`,
 `photo` and `sound`, sorted by what the work is rather than what the file type
-is. Drop files in, then point `content.js` at them:
+is. Only `photo` holds anything today. Drop files in, then point `content.js` at them:
 `assets/media/photo/sports-day-01.jpg`.
 
 There's a [guide in that folder](assets/media/README.md) covering the four media
@@ -218,7 +216,7 @@ on YouTube or Vimeo and use an `embed` block — a self-hosted mp4 downloads in
 full before it plays.
 
 `assets/img/logo.svg` is the reverie K — the landing mark, the favicon, and the
-stand-in artwork on the sound release. It's a flat black glyph on a transparent
+the landing mark and the favicon. It's a flat black glyph on a transparent
 ground; the stylesheet inverts it on the dark theme so it stays legible without
 a second file. The other `.svg` files in that folder are leftover placeholders
 from an earlier draft, no longer referenced by anything — delete them whenever
@@ -293,12 +291,16 @@ Pages, or upload by FTP to any host. Nothing needs Node or a database.
 **Real:** the studio name, the about page, every contact detail, the whole gear
 list, and the service lists on the film and photo pages.
 
-**Real work:** every project on the site is yours. `travel vlog` plays from
-YouTube. `portrait night`, `night streets` and `festival` are your own frames.
-So is `fishing days`, though those images are the JPEG previews pulled out of
-the `.ARW` files rather than your own grade, so they are Sony's in-camera
-rendering — save Lightroom exports over them using the same filenames and
-nothing else needs changing.
+**Real work:** every project on the site is yours — `portrait night`,
+`night streets`, `festival` and `fishing days`, all photo. The `fishing days`
+images are the JPEG previews pulled out of the `.ARW` files rather than your
+own grade, so they are Sony's in-camera rendering; save Lightroom exports over
+them using the same filenames and nothing else needs changing.
+
+**The film page has no work on it.** It still sells four services and the rates
+page still prices them, but there is nothing to show behind them yet, so the
+"more — dm for details" row carries it. Add a `work` entry with
+`discipline: "film"` and it fills in.
 
 **Nothing is self-hosted any more.** There are no `video` blocks and no `audio`
 blocks left in `content.js`, so `assets/media/film/` and `assets/media/sound/`
@@ -307,11 +309,13 @@ files over 100 MB and a self-hosted mp4 downloads in full before it plays.
 Put long video on YouTube or Vimeo and use an `embed` block.
 
 The audio player is still wired up in `app.js` and the stylesheet, dormant
-until the first `audio` block appears. The sound page still sells the services.
+until the first `audio` block appears, though there is no sound page to drive
+it now. The `daws` and `plugins` groups stay on the gear page: they are what the
+film audio gets recorded and mixed with, which the film services still sell.
 
 **Still placeholder:** the `festival` blurb describes only what is visible in
 the frames and is marked `// TODO` — what the day actually was hasn't been
-written up. Also the three sound services below `mixing`.
+written up.
 
 Projects are fully bilingual — title, sidebar label, role, blurb and captions
 all switch with the language. Add new ones the same way.
