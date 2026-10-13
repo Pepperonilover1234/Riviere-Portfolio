@@ -18,7 +18,7 @@ const CONTENT = {
   /* ---------------------------------------------------------------- brand */
 
   name: "reverie",
-  tagline:   { en: "film · photo · sound", th: "วิดีโอ · ภาพ · เสียง" },
+  tagline:   { en: "film · photo", th: "วิดีโอ · ภาพ" },
   location:  { en: "lampang, thailand",    th: "ลำปาง ประเทศไทย" },
   copyright: "© 2026 reverie",
 
@@ -63,11 +63,11 @@ const CONTENT = {
     headline: "REVERIE",
     body: {
       en: [
-        "a small studio for <b>film</b>, <b>photo</b> and <b>sound</b>, working out of <em>lampang, thailand</em>.",
+        "a small studio for <b>film</b> and <b>photo</b>, working out of <em>lampang, thailand</em>.",
         "one person who shoots it, cuts it, scores it and mixes it. no agency layer, no waiting three weeks for a first draft."
       ],
       th: [
-        "สตูดิโอเล็ก ๆ ที่ทำ <b>วิดีโอ</b> <b>ภาพ</b> และ <b>เสียง</b> อยู่ที่ <em>ลำปาง ประเทศไทย</em>",
+        "สตูดิโอเล็ก ๆ ที่ทำ <b>วิดีโอ</b> และ <b>ภาพ</b> อยู่ที่ <em>ลำปาง ประเทศไทย</em>",
         "คนเดียวถ่ายเอง ตัดเอง ทำเพลงเอง มิกซ์เอง ไม่มีคนกลาง ไม่ต้องรอสามอาทิตย์กว่าจะได้เห็นตัวแรก"
       ]
     },
@@ -179,61 +179,6 @@ const CONTENT = {
       cta: { label: { en: "BOOK A SHOOT", th: "จองคิวถ่าย" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
     },
 
-    /* ------------------------------------------------------------ SOUND */
-    sound: {
-      label:    { en: "sound", th: "เสียง" },
-      headline: { en: "SOUND", th: "เสียง" },
-      blurb:    { en: "written, recorded, mixed", th: "แต่ง อัด มิกซ์" },
-      intro: {
-        en: [
-          "the half of the job most video people outsource. i write, produce, mix and master in-house, which is why the picture and the music actually land together.",
-          "send me a rough bounce or a blank session — either is a fine starting point."
-        ],
-        th: [
-          "ส่วนที่คนทำวิดีโอส่วนใหญ่จ้างข้างนอก แต่งเอง โปรดิวซ์เอง มิกซ์เอง มาสเตอร์เอง ภาพกับเพลงเลยไปด้วยกันได้จริง",
-          "ส่งไฟล์ร่างมาก็ได้ หรือยังไม่มีอะไรเลยก็ได้ เริ่มจากตรงไหนก็ได้"
-        ]
-      },
-      services: [
-        {
-          title: { en: "mixing", th: "มิกซ์" },
-          body: {
-            en: "your recorded tracks, balanced, treated and glued into a finished record. stems or a session, any daw. two rounds of revisions included so we get it right.",
-            th: "เอาแทร็กที่อัดไว้มาจัดบาลานซ์ ตกแต่ง แล้วรวมให้เป็นเพลงที่ฟังจบ ส่งมาเป็นสเต็มหรือทั้งโปรเจกต์ก็ได้ ใช้ DAW อะไรก็ได้ แก้ได้สองรอบ"
-          },
-          gets: { en: "mixed master + instrumental + stems", th: "ไฟล์มาสเตอร์ + instrumental + สเต็ม" },
-          note: { en: "per song · 3–5 working days", th: "คิดเป็นเพลง · 3–5 วันทำการ" }   // TODO your real turnaround
-        },
-        {
-          title: { en: "music production", th: "โปรดิวซ์เพลง" },                          // TODO adjust or delete
-          body: {
-            en: "original tracks built from the ground up — beats, topline production, arrangement, session players where they're needed.",
-            th: "ทำเพลงใหม่ตั้งแต่ศูนย์ บีต โปรดิวซ์ท่อนร้อง เรียบเรียง หานักดนตรีมาเล่นถ้าจำเป็น"
-          },
-          gets: { en: "produced track + project files", th: "เพลงที่โปรดิวซ์เสร็จ + ไฟล์โปรเจกต์" },
-          note: { en: "per song or per project", th: "คิดเป็นเพลงหรือเป็นโปรเจกต์" }
-        },
-        {
-          title: { en: "score to picture", th: "ทำสกอร์ประกอบภาพ" },                       // TODO adjust or delete
-          body: {
-            en: "original score written against a locked edit, so the cues hit the cut instead of fighting it. sync-ready and cleared, because i wrote it.",
-            th: "แต่งสกอร์กับภาพที่ล็อกแล้ว คิวดนตรีเลยลงกับการตัดพอดี ไม่ตีกัน ใช้ซิงก์ได้เลยเพราะแต่งเองทั้งหมด"
-          },
-          gets: { en: "full score + stems, cue sheet", th: "สกอร์เต็ม + สเต็ม + cue sheet" },
-          note: { en: "per minute of finished picture", th: "คิดตามความยาวของภาพ" }
-        },
-        {
-          title: { en: "sound design", th: "ซาวด์ดีไซน์" },                                // TODO adjust or delete
-          body: {
-            en: "foley, atmospheres, ui and impact design for film and games. also dialogue clean-up on footage recorded in less than perfect rooms.",
-            th: "โฟลีย์ เสียงบรรยากาศ เสียง UI และเสียงอิมแพกต์สำหรับหนังกับเกม รวมถึงเคลียร์เสียงพูดจากฟุตเทจที่อัดมาในห้องที่ไม่ค่อยดี"
-          },
-          gets: { en: "designed stems, delivered to spec", th: "สเต็มที่ดีไซน์แล้ว ส่งตามสเปก" },
-          note: { en: "per project", th: "คิดเป็นโปรเจกต์" }
-        }
-      ],
-      cta: { label: { en: "SEND ME A TRACK", th: "ส่งเพลงมาให้ฟัง" }, href: "mailto:chaiananpanadit.direct@gmail.com" }
-    }
   },
 
   /* -------------------------------------------------------------- contact */
@@ -289,7 +234,7 @@ const CONTENT = {
       { k: { en: "name",       th: "ชื่อ" },        v: "chaianan panadit (vi)" },        // TODO thai spelling
       { k: { en: "based",      th: "อยู่ที่" },      v: { en: "lampang, thailand", th: "ลำปาง ประเทศไทย" } },
       { k: { en: "studying",   th: "เรียนที่" },     v: { en: "bunyawat, lampang", th: "บุญวาทย์ ลำปาง" } },
-      { k: { en: "works",      th: "ทำ" },          v: { en: "film · photo · sound", th: "วิดีโอ · ภาพ · เสียง" } },
+      { k: { en: "works",      th: "ทำ" },          v: { en: "film · photo", th: "วิดีโอ · ภาพ" } },
       { k: { en: "area",       th: "พื้นที่" },      v: { en: "all of lampang · chiang mai", th: "ทั่วลำปาง · เชียงใหม่" } },
       { k: { en: "travel",     th: "เดินทาง" },     v: { en: "chiang mai charged both ways", th: "ไปเชียงใหม่คิดค่าเดินทางไปกลับ" } },
       { k: { en: "turnaround", th: "ระยะเวลา" },    v: { en: "days, not weeks", th: "เป็นวัน ไม่ใช่เป็นอาทิตย์" } },
@@ -489,7 +434,7 @@ const CONTENT = {
      `image alt` text is deliberately left in english. It's for screen readers
      and search engines rather than the page, and it isn't worth doubling.
 
-       discipline : "film" | "photo" | "sound"   <- which page it shows up on
+       discipline : "film" | "photo"   <- which page it shows up on
        slug       : url id, lowercase, no spaces
        client     : the label in the sidebar list
        media      : any number of blocks —
@@ -502,24 +447,6 @@ const CONTENT = {
   */
 
   work: [
-    {
-      /* TODO — title and blurb are still mine, not yours. Rewrite them. */
-      discipline: "film", slug: "travel-vlog",
-      client: { en: "travel vlog",  th: "vlog ท่องเที่ยว" },
-      title:  { en: "TRAVEL VLOG",  th: "VLOG ท่องเที่ยว" },
-      year: "2026",
-      role:  { en: "camera op / edit", th: "ถ่าย / ตัดต่อ" },
-      kind:  { en: "vlog", th: "vlog" },
-      media: [
-        /* On YouTube rather than self-hosted. The 465 MB master never went into
-           the repo — assets/media/film/*.mp4 is gitignored, because GitHub
-           rejects anything over 100 MB — so this page was showing a dead player
-           on the live site. An embed also avoids the real problem with a
-           self-hosted mp4: it downloads in full before it plays.
-           Embeds need the /embed/ url, not the youtu.be share link. */
-        { type: "embed", src: "https://www.youtube.com/embed/VjtrD92pC9s", caption: "1:19" }
-      ]
-    },
     /* "sports day" and "is it really you — live" both removed: the first was
        an invented write-up on placeholder images, the second pointed at an mp4
        that was never in the repo, so it rendered a dead player. Live sessions

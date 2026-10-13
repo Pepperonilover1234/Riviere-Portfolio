@@ -19,7 +19,7 @@
   var wipe       = document.getElementById("wipe");
   var slate      = document.getElementById("wipe-slate");
 
-  var DISC_ORDER = ["film", "photo", "sound"];
+  var DISC_ORDER = ["film", "photo"];
   var LANGS      = ["en", "th"];
   var STORE_KEY  = "reverie-lang";
 
