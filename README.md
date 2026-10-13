@@ -226,11 +226,19 @@ you like.
 
 ## Look and feel
 
-Black and white on sketchbook paper. The light background is a warm off-white
-(`#f1efe9`) rather than `#fff`, which is what stops the page glaring; the dark
+Terracotta on sketchbook paper. The light background is a warm off-white
+(`#f3f1ed`) rather than `#fff`, which is what stops the page glaring; the dark
 theme is that same paper turned right down, warm rather than a blue-black.
-Nothing else carries colour — the photographs are the only saturated thing on
-the site, which is the point of a portfolio.
+
+One colour, `--accent` — terracotta `#a8451c` on light, `#e2794b` on dark. It
+has exactly two jobs: the index numbering (`01 / 02 / 03` beside the
+disciplines and the services), which is where it sits at rest, and everything
+interactive — hovers, the focus ring, the audio player's fill, the rule under
+the slate. Nothing else on the page is coloured but the photographs, which is
+the point of a portfolio.
+
+Change `--l-accent` and `--d-accent` and all of that moves together. Set them
+to `var(--l-ink)` / `var(--d-ink)` and the site goes monochrome.
 
 All colours, type size, sidebar width and column width are the tokens at the top
 of [`css/style.css`](css/style.css). `--measure` sets how wide the content
@@ -242,6 +250,13 @@ anything else.
 Deliberately absent: cards, shadows, rounded corners, screens, grain, and any
 block of flat colour. Rules are a single hairline. The sidebar sits on the same
 paper as the page rather than in a field of its own.
+
+One note on the greys, if you ever restore the original palette wholesale: the
+first version's `--l-muted` was `#a5a099`, which measures 2.30:1 against the
+paper and fails even the large-text accessibility floor. `--muted` carries real
+content — captions, service notes, the blurbs on the discipline rows — so it is
+set a few steps darker (`#6f6b63`, 4.70:1) to clear AA. Same for the dark
+theme's `#827b71`.
 
 ### Light and dark
 
